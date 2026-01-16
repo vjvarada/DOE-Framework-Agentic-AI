@@ -39,6 +39,20 @@ A comprehensive, step-by-step tutorial on building and deploying AI-powered agen
 
 **This project can automatically generate standalone agent workspaces** that you can copy to separate folders for independent development.
 
+### Prerequisites
+
+Before generating workspaces, ensure you have:
+
+1. **Python 3.10+** installed ([python.org](https://www.python.org/downloads/))
+2. **VS Code** with **GitHub Copilot** extension (see [Setting Up VS Code + GitHub Copilot](#setting-up-vs-code--github-copilot))
+3. **This repository cloned**:
+   ```powershell
+   git clone https://github.com/vjvarada/DOE-Framework-Agentic-AI.git
+   cd DOE-Framework-Agentic-AI
+   ```
+
+> **Note**: The generator script itself has no dependencies. For the generated workspaces, you'll install their specific requirements after creation.
+
 ### Ask the Agent
 
 Simply tell your AI agent:
