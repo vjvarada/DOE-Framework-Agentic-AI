@@ -118,11 +118,13 @@ python execution/create_agent_workspace.py \
 
 1. **Copy** the workspace from `outputs/` to your desired location
 2. **Open** the new workspace folder in VS Code
-3. **Configure the agent** — Point GitHub Copilot to the workspace's `AGENTS.md`:
+3. **Configure the agent** — Create a custom agent for this workspace:
    - Open Copilot Chat Panel (`Ctrl+Shift+I`)
-   - Click the gear icon (⚙️) → "Configure Instructions"
-   - Select the `AGENTS.md` file in your new workspace
-   - See [Step 2b: Set Up Custom Agent Instructions](#step-2-configure-github-copilot-custom-agent-manual-steps-required) for detailed steps
+   - Click the agent dropdown → "Configure Custom Agents" → "Create new custom agent"
+   - Choose **Workspace** as the storage location (creates `.github/agents/` folder)
+   - Name it (e.g., `doe-agent`) and configure the `.agent.md` file
+   - Reference the workspace's `AGENTS.md` in your agent instructions
+   - See [Step 2c: Create a Custom Agent](#step-2-configure-github-copilot-manual-steps-required) for detailed steps
 4. **Set up environment** — Copy and configure API keys:
    ```powershell
    cp .env.example .env
@@ -395,9 +397,9 @@ code --install-extension ms-python.python
 code --install-extension ms-python.vscode-pylance
 ```
 
-### Step 2: Configure GitHub Copilot Custom Agent (Manual Steps Required)
+### Step 2: Configure GitHub Copilot (Manual Steps Required)
 
-> ⚠️ **Important**: The custom agent setup requires manual UI interaction—it cannot be fully automated. However, once configured, the agent reads instruction files automatically.
+> ⚠️ **Important**: The initial Copilot setup requires manual UI interaction—it cannot be fully automated.
 
 **Step 2a: Sign In and Verify Copilot is Active**
 
@@ -406,40 +408,52 @@ code --install-extension ms-python.vscode-pylance
 3. **Verify activation**: You should see "Copilot" status as active (not "Copilot: Inactive")
 4. **Check subscription**: Ensure your GitHub account has an active Copilot subscription
 
-> **Troubleshooting**: If Copilot isn't activating, go to **File → Preferences → Settings** (`Ctrl+,`), search for "Copilot", and ensure `GitHub Copilot: Enable` is checked.
+> **Troubleshooting**: If Copilot isn't activating, go to **File → Preferences → Settings** (`Ctrl+,`), search for "Copilot", and ensure it's enabled.
 
-**Step 2b: Set Up Custom Agent Instructions**
+**Step 2b: Understanding Copilot Customization Options**
 
-GitHub Copilot automatically reads instruction files from your workspace. The two supported locations are:
+VS Code offers multiple ways to customize GitHub Copilot's behavior:
 
-| File Location | Priority | Description |
-|---------------|----------|-------------|
-| `.github/copilot-instructions.md` | Primary | GitHub's official convention |
-| `AGENTS.md` (root) | Alternative | Used by this workspace |
+| Customization Type | File Location | Purpose |
+|--------------------|---------------|---------|
+| **Custom Instructions** | `.github/copilot-instructions.md` | Project-wide coding standards and guidelines |
+| **Agent Instructions** | `AGENTS.md` (root) | System prompt for AI agent behavior |
+| **Custom Agents** | `.github/agents/*.agent.md` | Specialized AI personas with specific tools |
 
-**To configure:**
+This workspace uses [AGENTS.md](AGENTS.md) as the agent instruction file — Copilot automatically reads it when working in this workspace.
 
-1. **Open Copilot Chat Panel**: Press `Ctrl+Shift+I` (or click the chat icon in the Activity Bar)
-2. **Open Chat Settings**: Click the **gear icon** (⚙️) in the Copilot Chat panel header
-3. **Find "Instructions"** or **"Custom Instructions"** settings
-4. **Enable workspace instructions**: Ensure Copilot is configured to read from workspace files
-5. **Verify**: Ask Copilot "What framework are you operating under?" — it should mention the DOE framework
+**Step 2c: Create a Custom Agent (Optional but Recommended)**
 
-> **Note**: This workspace uses [AGENTS.md](AGENTS.md) as the instruction file. You can also copy it to `.github/copilot-instructions.md` for GitHub's official convention.
+Custom agents let you create specialized AI personas with specific tools and instructions. To create one:
 
-**What CAN be automated** (agent creates these files):
-- Instruction files ([AGENTS.md](AGENTS.md))
-- Folder structure (`directives/`, `execution/`, `.tmp/`)
-- Configuration files (`.env` template, `webhooks.json`)
+1. **Open Copilot Chat Panel**: Press `Ctrl+Shift+I`
+2. **Click the agent dropdown** at the top of the chat panel (shows "Agent" or current agent name)
+3. **Select "Configure Custom Agents"**
+4. **Click "Create new custom agent"** (or run `Chat: New Custom Agent` from Command Palette)
+5. **Choose storage location**:
+   - **Workspace** (`.github/agents/`) — shared with your team via Git
+   - **User Profile** — personal, available across all workspaces
+6. **Enter a file name** (e.g., `doe-agent`)
+7. **Configure the `.agent.md` file** with instructions and available tools
 
-**What MUST be done manually**:
-- Initial GitHub authentication
-- Enabling workspace instructions in Copilot settings
-- Granting file system permissions on first use
+> **For this workspace**: You can copy the contents of [AGENTS.md](AGENTS.md) into a custom agent file to get the DOE framework behavior as a switchable agent.
 
-**Step 2c: Open Copilot Chat Panel**
+**Example Custom Agent File** (`.github/agents/doe-agent.agent.md`):
+```yaml
+---
+description: DOE Framework agent for directive-based automation
+name: DOE Agent
+tools: ['search', 'fetch', 'terminal', 'editFiles']
+---
+# DOE Framework Agent
+You operate within a 3-layer architecture (Directive, Orchestration, Execution).
+Read the full instructions from AGENTS.md in the workspace root.
+```
+
+**Step 2d: Open Copilot Chat Panel**
    - Press `Ctrl+Shift+I` to open Copilot Chat
    - Or click the Copilot icon in the Activity Bar
+   - Switch agents using the dropdown at the top of the chat panel
 
 ### Step 3: Open This Workspace
 
