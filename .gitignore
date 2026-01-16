@@ -12,6 +12,9 @@ token.json
 *.tmp
 *.temp
 
+# Generated agent workspaces (copy out before deleting)
+outputs/
+
 # Python
 __pycache__/
 *.py[cod]

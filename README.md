@@ -8,29 +8,105 @@ A comprehensive, step-by-step tutorial on building and deploying AI-powered agen
 
 ## Table of Contents
 
-1. [Introduction to Agentic Workflows](#introduction-to-agentic-workflows)
-2. [Understanding the AI Overhang](#understanding-the-ai-overhang)
-3. [Documents, Chatbots, and Agents](#documents-chatbots-and-agents)
-4. [The Five Components of an Agent](#the-five-components-of-an-agent)
-5. [Why Frameworks Are Necessary](#why-frameworks-are-necessary)
-6. [The DOE Framework](#the-doe-framework-directive-orchestration-execution)
-7. [Setting Up VS Code + GitHub Copilot](#setting-up-vs-code--github-copilot)
-8. [Workspace Structure & Key Files](#workspace-structure--key-files)
-9. [Creating Your First Agentic Workflow](#creating-your-first-agentic-workflow)
-10. [Writing Effective Directives](#writing-effective-directives)
-11. [Building Execution Scripts](#building-execution-scripts)
-12. [Claude Skills Framework](#claude-skills-framework)
-13. [Model Context Protocol (MCP)](#model-context-protocol-mcp)
-14. [Self-Annealing: Building Resilient Workflows](#self-annealing-building-resilient-workflows)
-15. [Using Workflows in Practice](#using-workflows-in-practice)
-16. [Meta-Directives: Chaining Workflows](#meta-directives-chaining-workflows)
-17. [API Documentation Perusal](#api-documentation-perusal)
-18. [Building CRM Wrappers](#building-crm-wrappers)
-19. [Deploying to the Cloud](#deploying-to-the-cloud)
-20. [Running Multiple Agents in Parallel](#running-multiple-agents-in-parallel)
-21. [Sub-Agents](#sub-agents)
-22. [Best Practices and Safety Guidelines](#best-practices-and-safety-guidelines)
-23. [Quick Reference: This Workspace](#quick-reference-this-workspace)
+1. [Quick Start: Generate an Agent Workspace](#quick-start-generate-an-agent-workspace)
+2. [Introduction to Agentic Workflows](#introduction-to-agentic-workflows)
+3. [Understanding the AI Overhang](#understanding-the-ai-overhang)
+4. [Documents, Chatbots, and Agents](#documents-chatbots-and-agents)
+5. [The Five Components of an Agent](#the-five-components-of-an-agent)
+6. [Why Frameworks Are Necessary](#why-frameworks-are-necessary)
+7. [The DOE Framework](#the-doe-framework-directive-orchestration-execution)
+8. [Setting Up VS Code + GitHub Copilot](#setting-up-vs-code--github-copilot)
+9. [Workspace Structure & Key Files](#workspace-structure--key-files)
+10. [Creating Your First Agentic Workflow](#creating-your-first-agentic-workflow)
+11. [Writing Effective Directives](#writing-effective-directives)
+12. [Building Execution Scripts](#building-execution-scripts)
+13. [Claude Skills Framework](#claude-skills-framework)
+14. [Model Context Protocol (MCP)](#model-context-protocol-mcp)
+15. [Self-Annealing: Building Resilient Workflows](#self-annealing-building-resilient-workflows)
+16. [Using Workflows in Practice](#using-workflows-in-practice)
+17. [Meta-Directives: Chaining Workflows](#meta-directives-chaining-workflows)
+18. [API Documentation Perusal](#api-documentation-perusal)
+19. [Building CRM Wrappers](#building-crm-wrappers)
+20. [Deploying to the Cloud](#deploying-to-the-cloud)
+21. [Running Multiple Agents in Parallel](#running-multiple-agents-in-parallel)
+22. [Sub-Agents](#sub-agents)
+23. [Best Practices and Safety Guidelines](#best-practices-and-safety-guidelines)
+24. [Quick Reference: This Workspace](#quick-reference-this-workspace)
+
+---
+
+## Quick Start: Generate an Agent Workspace
+
+**This project can automatically generate standalone agent workspaces** that you can copy to separate folders for independent development.
+
+### Ask the Agent
+
+Simply tell your AI agent:
+
+> "Create a new lead generation agent called 'My Lead Bot'"
+
+Or:
+
+> "Set up an agent workspace for email automation"
+
+The agent will use [directives/create_agent_workspace.md](directives/create_agent_workspace.md) to scaffold a complete workspace.
+
+### Run Manually
+
+```powershell
+# List available agent types
+python execution/create_agent_workspace.py --list-types
+
+# Create a workspace
+python execution/create_agent_workspace.py --name "My Agent" --type lead_generation
+```
+
+### Available Agent Types
+
+| Type | Description | Key Capabilities |
+|------|-------------|------------------|
+| `lead_generation` | Scrapes and enriches leads | Google Maps, SERP, Apify, email enrichment |
+| `email_automation` | Cold email campaigns | Instantly.ai integration, auto-replies |
+| `freelance_proposals` | Job scraping & proposals | Upwork automation, AI proposal generation |
+| `video_editing` | Video processing | Jump cuts via VAD, transitions |
+| `crm_integration` | Data & webhook management | Google Sheets, Modal webhooks |
+| `full_stack` | All capabilities combined | Everything above |
+| `custom` | Minimal base setup | Basic structure, add your own |
+
+### Generated Workspace Structure
+
+```
+outputs/my-agent/
+├── AGENTS.md           # Customized system prompt
+├── README.md           # Getting started guide
+├── .env.example        # Required API keys template
+├── requirements.txt    # Python dependencies
+├── .gitignore          # Standard ignores
+├── directives/         # Relevant SOPs only
+│   └── *.md
+└── execution/          # Relevant scripts only
+    └── *.py
+```
+
+### Combining Capabilities
+
+Need email automation with a lead gen agent? Add extra scripts:
+
+```powershell
+python execution/create_agent_workspace.py \
+  --name "Outreach Agent" \
+  --type lead_generation \
+  --additional-scripts "instantly_autoreply.py,instantly_create_campaigns.py" \
+  --additional-directives "instantly_autoreply.md"
+```
+
+### After Generation
+
+1. **Copy** the workspace from `outputs/` to your desired location
+2. **Configure** `.env` with your API keys
+3. **Install** dependencies: `pip install -r requirements.txt`
+4. **Open** in VS Code with GitHub Copilot
+5. **Start** using your specialized agent!
 
 ---
 
@@ -456,6 +532,7 @@ Location: [`directives/`](directives/)
 
 | Directive | Purpose |
 |-----------|---------|
+| [create_agent_workspace.md](directives/create_agent_workspace.md) | **Generate new agent workspaces** |
 | [scrape_leads.md](directives/scrape_leads.md) | Lead scraping with industry verification |
 | [create_proposal.md](directives/create_proposal.md) | PandaDoc proposal generation |
 | [gmaps_lead_generation.md](directives/gmaps_lead_generation.md) | Google Maps lead enrichment pipeline |
@@ -520,6 +597,12 @@ Location: [`execution/`](execution/)
 |--------|----------|
 | [jump_cut_vad_singlepass.py](execution/jump_cut_vad_singlepass.py) | Voice activity detection for editing |
 | [insert_3d_transition.py](execution/insert_3d_transition.py) | 3D transition insertion |
+
+**Workspace Generator:**
+| Script | Function |
+|--------|----------|
+| [create_agent_workspace.py](execution/create_agent_workspace.py) | **Generate standalone agent workspaces** |
+| [agent_templates.json](execution/agent_templates.json) | Agent type configurations |
 
 ---
 
@@ -1686,6 +1769,7 @@ DOE Framework Agentic AI/
 ├── 📄 requirements.txt               # Python dependencies (pip install -r)
 ├── 📄 package.json                   # Node.js dependencies (npm install)
 ├── 📁 directives/                    # The "WHAT" layer
+│   ├── create_agent_workspace.md     # 🆕 Generate new agent workspaces
 │   ├── create_proposal.md            # PandaDoc proposal generation
 │   ├── gmaps_lead_generation.md      # Google Maps lead enrichment
 │   ├── google_serp_lead_scraper.md   # Google search scraping
@@ -1694,6 +1778,11 @@ DOE Framework Agentic AI/
 │   ├── scrape_leads.md               # Apify lead scraping
 │   └── upwork_scrape_apply.md        # Upwork automation
 ├── 📁 execution/                     # The "HOW" layer
+│   ├── 🏭 Workspace Generator
+│   │   ├── create_agent_workspace.py # 🆕 Generate agent workspaces
+│   │   ├── agent_templates.json      # Agent type configurations
+│   │   └── templates/                # Base templates
+│   │       └── AGENTS_BASE.md
 │   ├── 📊 Lead Generation
 │   │   ├── scrape_apify.py
 │   │   ├── scrape_apify_parallel.py
@@ -1726,6 +1815,7 @@ DOE Framework Agentic AI/
 │   └── 🎬 Video
 │       ├── jump_cut_vad_singlepass.py
 │       └── insert_3d_transition.py
+├── 📁 outputs/                       # 🆕 Generated agent workspaces (git-ignored)
 ├── 📁 .tmp/                          # Temporary files (git-ignored)
 └── 📄 .env                           # API keys (create yourself)
 ```
@@ -1780,11 +1870,12 @@ SLACK_WEBHOOK_URL=         # Notifications
 This workspace is a fully functional agentic workflow system. The key files to understand:
 
 1. **Start here**: [AGENTS.md](AGENTS.md) - The system prompt that teaches the agent the DOE framework
-2. **Learn from examples**: [directives/](directives/) - Real production directives you can copy and modify
-3. **Study the code**: [execution/](execution/) - Deterministic scripts that do the actual work
-4. **Deploy to cloud**: [execution/modal_webhook.py](execution/modal_webhook.py) - Event-driven automation
+2. **Generate workspaces**: Ask the agent to "create a new agent" or run [create_agent_workspace.py](execution/create_agent_workspace.py)
+3. **Learn from examples**: [directives/](directives/) - Real production directives you can copy and modify
+4. **Study the code**: [execution/](execution/) - Deterministic scripts that do the actual work
+5. **Deploy to cloud**: [execution/modal_webhook.py](execution/modal_webhook.py) - Event-driven automation
 
-The skill of building agentic workflows is now one of the highest-ROI skills available. Use this workspace as your starting point—copy directives, modify scripts, and build your own library of automated workflows.
+The skill of building agentic workflows is now one of the highest-ROI skills available. Use this workspace as your starting point—generate specialized agents, copy directives, modify scripts, and build your own library of automated workflows.
 
 ---
 

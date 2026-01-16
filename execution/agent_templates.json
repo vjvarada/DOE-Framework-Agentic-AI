@@ -1,0 +1,239 @@
+{
+  "agent_types": {
+    "lead_generation": {
+      "name": "Lead Generation Agent",
+      "description": "Scrapes, enriches, and manages leads from Google Maps, SERP, and other sources",
+      "directives": [
+        "gmaps_lead_generation.md",
+        "google_serp_lead_scraper.md",
+        "scrape_leads.md"
+      ],
+      "scripts": [
+        "scrape_google_maps.py",
+        "scrape_apify.py",
+        "scrape_apify_parallel.py",
+        "gmaps_lead_pipeline.py",
+        "gmaps_parallel_pipeline.py",
+        "enrich_emails.py",
+        "read_sheet.py",
+        "append_to_sheet.py",
+        "update_sheet.py",
+        "casualize_batch.py",
+        "casualize_city_names_batch.py",
+        "casualize_company_names_batch.py",
+        "casualize_first_names_batch.py"
+      ],
+      "packages": [
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib",
+        "apify-client",
+        "requests",
+        "python-dotenv",
+        "openai",
+        "anthropic"
+      ],
+      "env_vars": [
+        "APIFY_API_TOKEN",
+        "GOOGLE_SHEETS_CREDENTIALS_FILE",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY"
+      ],
+      "system_prompt_additions": "You specialize in lead generation workflows. Your primary tasks involve scraping business data from Google Maps, Google SERP, and other sources, enriching lead data with emails and contact info, and managing leads in Google Sheets."
+    },
+    "email_automation": {
+      "name": "Email Automation Agent",
+      "description": "Automates cold email campaigns, auto-replies, and client communication via Instantly.ai",
+      "directives": [
+        "instantly_autoreply.md"
+      ],
+      "scripts": [
+        "instantly_autoreply.py",
+        "instantly_create_campaigns.py",
+        "welcome_client_emails.py",
+        "read_sheet.py",
+        "update_sheet.py"
+      ],
+      "packages": [
+        "requests",
+        "python-dotenv",
+        "openai",
+        "anthropic",
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib"
+      ],
+      "env_vars": [
+        "INSTANTLY_API_KEY",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY",
+        "GOOGLE_SHEETS_CREDENTIALS_FILE"
+      ],
+      "system_prompt_additions": "You specialize in email automation workflows. Your primary tasks involve managing cold email campaigns through Instantly.ai, crafting personalized auto-replies, and tracking campaign performance."
+    },
+    "freelance_proposals": {
+      "name": "Freelance & Proposals Agent",
+      "description": "Scrapes Upwork jobs and generates winning proposals using AI",
+      "directives": [
+        "upwork_scrape_apply.md",
+        "create_proposal.md"
+      ],
+      "scripts": [
+        "upwork_scraper.py",
+        "upwork_apify_scraper.py",
+        "upwork_proposal_generator.py",
+        "create_proposal.py",
+        "read_sheet.py",
+        "append_to_sheet.py",
+        "update_sheet.py"
+      ],
+      "packages": [
+        "requests",
+        "python-dotenv",
+        "openai",
+        "anthropic",
+        "apify-client",
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib",
+        "pandadoc-python-client"
+      ],
+      "env_vars": [
+        "APIFY_API_TOKEN",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY",
+        "PANDADOC_API_KEY",
+        "GOOGLE_SHEETS_CREDENTIALS_FILE"
+      ],
+      "system_prompt_additions": "You specialize in freelance automation workflows. Your primary tasks involve scraping job postings from Upwork, analyzing job requirements, generating tailored proposals, and tracking application status."
+    },
+    "video_editing": {
+      "name": "Video Editing Agent",
+      "description": "Automates video editing tasks like jump cuts using voice activity detection",
+      "directives": [
+        "jump_cut_vad.md"
+      ],
+      "scripts": [
+        "jump_cut_vad_singlepass.py",
+        "insert_3d_transition.py"
+      ],
+      "packages": [
+        "moviepy",
+        "webrtcvad",
+        "pydub",
+        "numpy",
+        "python-dotenv"
+      ],
+      "env_vars": [],
+      "system_prompt_additions": "You specialize in video editing automation. Your primary tasks involve detecting silence in videos using voice activity detection (VAD), creating jump cuts, and applying transitions to produce polished final videos."
+    },
+    "crm_integration": {
+      "name": "CRM Integration Agent",
+      "description": "Manages data flow between Google Sheets, webhooks, and cloud services",
+      "directives": [],
+      "scripts": [
+        "read_sheet.py",
+        "append_to_sheet.py",
+        "update_sheet.py",
+        "modal_webhook.py",
+        "onboarding_post_kickoff.py"
+      ],
+      "packages": [
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib",
+        "modal",
+        "requests",
+        "python-dotenv"
+      ],
+      "env_vars": [
+        "GOOGLE_SHEETS_CREDENTIALS_FILE",
+        "MODAL_TOKEN_ID",
+        "MODAL_TOKEN_SECRET",
+        "SLACK_WEBHOOK_URL"
+      ],
+      "system_prompt_additions": "You specialize in CRM and data integration workflows. Your primary tasks involve reading and writing data to Google Sheets, handling webhooks, and orchestrating data flow between cloud services."
+    },
+    "full_stack": {
+      "name": "Full Stack Agent",
+      "description": "Complete agent with ALL capabilities - lead gen, email, proposals, video, and CRM",
+      "directives": [
+        "gmaps_lead_generation.md",
+        "google_serp_lead_scraper.md",
+        "scrape_leads.md",
+        "instantly_autoreply.md",
+        "upwork_scrape_apply.md",
+        "create_proposal.md",
+        "jump_cut_vad.md"
+      ],
+      "scripts": "ALL",
+      "packages": [
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib",
+        "apify-client",
+        "requests",
+        "python-dotenv",
+        "openai",
+        "anthropic",
+        "pandadoc-python-client",
+        "modal",
+        "moviepy",
+        "webrtcvad",
+        "pydub",
+        "numpy"
+      ],
+      "env_vars": [
+        "APIFY_API_TOKEN",
+        "GOOGLE_SHEETS_CREDENTIALS_FILE",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY",
+        "INSTANTLY_API_KEY",
+        "PANDADOC_API_KEY",
+        "MODAL_TOKEN_ID",
+        "MODAL_TOKEN_SECRET",
+        "SLACK_WEBHOOK_URL"
+      ],
+      "system_prompt_additions": "You are a full-stack automation agent with capabilities across lead generation, email automation, freelance proposals, video editing, and CRM integration. Choose the appropriate tools based on the task at hand."
+    },
+    "custom": {
+      "name": "Custom Agent",
+      "description": "Minimal base setup - add your own directives and scripts",
+      "directives": [],
+      "scripts": [
+        "read_sheet.py",
+        "append_to_sheet.py",
+        "update_sheet.py"
+      ],
+      "packages": [
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib",
+        "requests",
+        "python-dotenv",
+        "openai",
+        "anthropic"
+      ],
+      "env_vars": [
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY",
+        "GOOGLE_SHEETS_CREDENTIALS_FILE"
+      ],
+      "system_prompt_additions": "You are a custom automation agent. Your capabilities will be defined by the directives and scripts added to this workspace."
+    }
+  },
+  "base_structure": {
+    "folders": [
+      "directives",
+      "execution",
+      ".tmp"
+    ],
+    "files": {
+      "AGENTS.md": "template",
+      ".env.example": "generated",
+      "requirements.txt": "generated",
+      ".gitignore": "static",
+      "README.md": "generated"
+    }
+  }
+}
