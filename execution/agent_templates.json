@@ -112,24 +112,27 @@
     },
     "video_editing": {
       "name": "Video Editing Agent",
-      "description": "Automates video editing tasks like jump cuts using voice activity detection",
+      "description": "Complete video editing automation - removes silences, adds jump cuts/transitions, transcribes content, and auto-names output files",
       "copilot_tools": ["codebase", "editFiles", "extensions", "fetch", "findTestFiles", "new", "problems", "search", "terminalLastCommand", "terminalSelection", "terminal", "usages", "vscodeAPI"],
       "directives": [
+        "video_editor.md",
         "jump_cut_vad.md"
       ],
       "scripts": [
+        "video_editor_pipeline.py",
         "jump_cut_vad_singlepass.py",
         "insert_3d_transition.py"
       ],
       "packages": [
-        "moviepy",
-        "webrtcvad",
-        "pydub",
+        "torch",
+        "openai-whisper",
         "numpy",
         "python-dotenv"
       ],
-      "env_vars": [],
-      "system_prompt_additions": "You specialize in video editing automation. Your primary tasks involve detecting silence in videos using voice activity detection (VAD), creating jump cuts, and applying transitions to produce polished final videos."
+      "env_vars": [
+        "OPENAI_API_KEY"
+      ],
+      "system_prompt_additions": "You specialize in video editing automation. Your primary tasks involve removing silences from talking-head videos using Voice Activity Detection (Silero VAD), adding jump cuts to create dynamic content, transcribing videos using OpenAI Whisper, generating smart filenames based on content, applying audio enhancement (EQ, compression, loudness normalization), and adding transitions between cuts. Use video_editor_pipeline.py for complete editing with transcription and smart naming. Use jump_cut_vad_singlepass.py for quick silence removal. Use insert_3d_transition.py for 3D swivel effects. Key parameters: --min-silence (0.3 for aggressive, 1.0 for natural), --padding (50 for tight, 200 for relaxed), --enhance-audio for professional quality, --whisper-model medium/large for better transcription."
     },
     "crm_integration": {
       "name": "CRM Integration Agent",
