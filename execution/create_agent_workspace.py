@@ -233,12 +233,261 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# Don't ignore .vscode - we want the settings
+!.vscode/
 """
     
     with open(workspace_path / ".gitignore", "w", encoding="utf-8") as f:
         f.write(content)
     
     print(f"  ✓ Generated .gitignore")
+
+
+def generate_setup_script(workspace_path: Path, agent_name: str, packages: list) -> None:
+    """
+    Generate setup.ps1 script for one-command environment setup.
+    
+    This script:
+    - Creates Python virtual environment
+    - Installs all requirements
+    - Copies .env.example to .env if not exists
+    - Validates the setup
+    """
+    content = f'''# {agent_name} - Automated Setup Script
+# Run this script to set up the agent environment from scratch
+# Usage: .\\setup.ps1
+
+Write-Host "============================================" -ForegroundColor Cyan
+Write-Host "Setting up: {agent_name}" -ForegroundColor Cyan
+Write-Host "============================================" -ForegroundColor Cyan
+Write-Host ""
+
+# Check Python is installed
+$pythonVersion = python --version 2>&1
+if ($LASTEXITCODE -ne 0) {{
+    Write-Host "ERROR: Python is not installed or not in PATH" -ForegroundColor Red
+    Write-Host "Please install Python 3.10+ from https://www.python.org/downloads/" -ForegroundColor Yellow
+    exit 1
+}}
+Write-Host "✓ Found $pythonVersion" -ForegroundColor Green
+
+# Create virtual environment if it doesn't exist
+if (-not (Test-Path ".venv")) {{
+    Write-Host "Creating virtual environment..." -ForegroundColor Yellow
+    python -m venv .venv
+    if ($LASTEXITCODE -ne 0) {{
+        Write-Host "ERROR: Failed to create virtual environment" -ForegroundColor Red
+        exit 1
+    }}
+    Write-Host "✓ Virtual environment created" -ForegroundColor Green
+}} else {{
+    Write-Host "✓ Virtual environment already exists" -ForegroundColor Green
+}}
+
+# Activate virtual environment
+Write-Host "Activating virtual environment..." -ForegroundColor Yellow
+& .\\.venv\\Scripts\\Activate.ps1
+
+# Upgrade pip
+Write-Host "Upgrading pip..." -ForegroundColor Yellow
+python -m pip install --upgrade pip --quiet
+
+# Install requirements
+Write-Host "Installing dependencies..." -ForegroundColor Yellow
+if (Test-Path "requirements.txt") {{
+    pip install -r requirements.txt --quiet
+    if ($LASTEXITCODE -ne 0) {{
+        Write-Host "ERROR: Failed to install requirements" -ForegroundColor Red
+        exit 1
+    }}
+    Write-Host "✓ Dependencies installed" -ForegroundColor Green
+}} else {{
+    Write-Host "WARNING: requirements.txt not found" -ForegroundColor Yellow
+}}
+
+# Copy .env.example to .env if .env doesn't exist
+if (-not (Test-Path ".env")) {{
+    if (Test-Path ".env.example") {{
+        Copy-Item ".env.example" ".env"
+        Write-Host "✓ Created .env from .env.example" -ForegroundColor Green
+        Write-Host "  IMPORTANT: Edit .env with your API keys!" -ForegroundColor Yellow
+    }}
+}} else {{
+    Write-Host "✓ .env file already exists" -ForegroundColor Green
+}}
+
+# Create .tmp directory if it doesn't exist
+if (-not (Test-Path ".tmp")) {{
+    New-Item -ItemType Directory -Path ".tmp" | Out-Null
+    Write-Host "✓ Created .tmp directory" -ForegroundColor Green
+}}
+
+Write-Host ""
+Write-Host "============================================" -ForegroundColor Cyan
+Write-Host "✓ SETUP COMPLETE!" -ForegroundColor Green
+Write-Host "============================================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Next steps:" -ForegroundColor White
+Write-Host "  1. Edit .env with your API keys (if any required)" -ForegroundColor White
+Write-Host "  2. Open this folder in VS Code" -ForegroundColor White
+Write-Host "  3. Select '{agent_name}' from Copilot Chat agent dropdown" -ForegroundColor White
+Write-Host ""
+Write-Host "To activate the environment manually:" -ForegroundColor Gray
+Write-Host "  .\\.venv\\Scripts\\Activate.ps1" -ForegroundColor Gray
+Write-Host ""
+'''
+    
+    with open(workspace_path / "setup.ps1", "w", encoding="utf-8") as f:
+        f.write(content)
+    
+    # Also create a bash script for Unix systems
+    bash_content = f'''#!/bin/bash
+# {agent_name} - Automated Setup Script
+# Run this script to set up the agent environment from scratch
+# Usage: ./setup.sh
+
+echo "============================================"
+echo "Setting up: {agent_name}"
+echo "============================================"
+echo ""
+
+# Check Python is installed
+if ! command -v python3 &> /dev/null; then
+    echo "ERROR: Python3 is not installed"
+    echo "Please install Python 3.10+ from https://www.python.org/downloads/"
+    exit 1
+fi
+echo "✓ Found $(python3 --version)"
+
+# Create virtual environment if it doesn't exist
+if [ ! -d ".venv" ]; then
+    echo "Creating virtual environment..."
+    python3 -m venv .venv
+    echo "✓ Virtual environment created"
+else
+    echo "✓ Virtual environment already exists"
+fi
+
+# Activate virtual environment
+echo "Activating virtual environment..."
+source .venv/bin/activate
+
+# Upgrade pip
+echo "Upgrading pip..."
+pip install --upgrade pip --quiet
+
+# Install requirements
+echo "Installing dependencies..."
+if [ -f "requirements.txt" ]; then
+    pip install -r requirements.txt --quiet
+    echo "✓ Dependencies installed"
+else
+    echo "WARNING: requirements.txt not found"
+fi
+
+# Copy .env.example to .env if .env doesn't exist
+if [ ! -f ".env" ]; then
+    if [ -f ".env.example" ]; then
+        cp .env.example .env
+        echo "✓ Created .env from .env.example"
+        echo "  IMPORTANT: Edit .env with your API keys!"
+    fi
+else
+    echo "✓ .env file already exists"
+fi
+
+# Create .tmp directory if it doesn't exist
+mkdir -p .tmp
+echo "✓ Created .tmp directory"
+
+echo ""
+echo "============================================"
+echo "✓ SETUP COMPLETE!"
+echo "============================================"
+echo ""
+echo "Next steps:"
+echo "  1. Edit .env with your API keys (if any required)"
+echo "  2. Open this folder in VS Code"
+echo "  3. Select '{agent_name}' from Copilot Chat agent dropdown"
+echo ""
+echo "To activate the environment manually:"
+echo "  source .venv/bin/activate"
+echo ""
+'''
+    
+    with open(workspace_path / "setup.sh", "w", encoding="utf-8", newline='\n') as f:
+        f.write(bash_content)
+    
+    print(f"  ✓ Generated setup.ps1 and setup.sh (one-command setup)")
+
+
+def generate_vscode_tasks(workspace_path: Path, agent_name: str) -> None:
+    """
+    Generate .vscode/tasks.json for automated setup and common operations.
+    """
+    tasks = {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Setup Agent Environment",
+                "type": "shell",
+                "command": ".\\setup.ps1",
+                "windows": {
+                    "command": "powershell",
+                    "args": ["-ExecutionPolicy", "Bypass", "-File", ".\\setup.ps1"]
+                },
+                "linux": {
+                    "command": "bash",
+                    "args": ["./setup.sh"]
+                },
+                "osx": {
+                    "command": "bash",
+                    "args": ["./setup.sh"]
+                },
+                "group": {
+                    "kind": "build",
+                    "isDefault": True
+                },
+                "presentation": {
+                    "reveal": "always",
+                    "panel": "new"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Activate Virtual Environment",
+                "type": "shell",
+                "command": ".venv\\Scripts\\Activate.ps1",
+                "windows": {
+                    "command": "powershell",
+                    "args": ["-ExecutionPolicy", "Bypass", "-Command", "& .venv\\Scripts\\Activate.ps1"]
+                },
+                "presentation": {
+                    "reveal": "always",
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Install Requirements",
+                "type": "shell",
+                "command": "pip install -r requirements.txt",
+                "dependsOn": "Activate Virtual Environment",
+                "presentation": {
+                    "reveal": "always",
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            }
+        ]
+    }
+    
+    tasks_path = workspace_path / ".vscode" / "tasks.json"
+    with open(tasks_path, "w", encoding="utf-8") as f:
+        json.dump(tasks, f, indent=2)
+    
+    print(f"  ✓ Generated .vscode/tasks.json (build tasks)")
 
 
 def generate_readme(workspace_path: Path, agent_type: dict, agent_name: str) -> None:
@@ -251,36 +500,71 @@ def generate_readme(workspace_path: Path, agent_type: dict, agent_name: str) -> 
 
 {agent_type['description']}
 
-## Quick Start
+## One-Command Setup
 
-1. **Set up environment:**
-   ```bash
+**Windows (PowerShell):**
+```powershell
+.\\setup.ps1
+```
+
+**macOS/Linux:**
+```bash
+chmod +x setup.sh && ./setup.sh
+```
+
+This automatically:
+- ✅ Creates Python virtual environment
+- ✅ Installs all dependencies
+- ✅ Copies `.env.example` to `.env`
+- ✅ Creates `.tmp/` directory
+
+## Manual Setup (Alternative)
+
+1. **Create and activate virtual environment:**
+   ```powershell
+   python -m venv .venv
+   .\\.venv\\Scripts\\Activate.ps1
+   ```
+
+2. **Install dependencies:**
+   ```powershell
+   pip install -r requirements.txt
+   ```
+
+3. **Set up environment:**
+   ```powershell
    cp .env.example .env
    # Edit .env with your API keys
    ```
 
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Using the Agent
 
-3. **Add Google credentials** (if using Google Sheets):
-   - Place `credentials.json` in this folder
-   - Run any sheet script once to generate `token.json`
+1. **Open in VS Code** - The custom agent is pre-configured
+2. **Open Copilot Chat** - Press `Ctrl+Shift+I`
+3. **Select your agent** - Choose "{agent_name}" from the agent dropdown
+4. **Start working** - The agent knows the directives and scripts available
 
-4. **Open in VS Code with GitHub Copilot:**
-   - The agent will read `AGENTS.md` automatically
-   - Ask the agent to help you with tasks defined in `directives/`
+## VS Code Tasks (Optional)
+
+Press `Ctrl+Shift+B` to run the default build task (Setup Agent Environment).
+
+Other tasks available:
+- **Setup Agent Environment** - Full one-command setup
+- **Activate Virtual Environment** - Activate .venv
+- **Install Requirements** - Install/update dependencies
 
 ## Structure
 
 ```
 {agent_name}/
-├── AGENTS.md           # System prompt for AI agents
-├── .env.example        # Template for API keys
-├── requirements.txt    # Python dependencies
-├── directives/         # What to do (SOPs)
-└── execution/          # How to do it (scripts)
+├── setup.ps1 / setup.sh  # One-command setup scripts
+├── AGENTS.md             # System prompt for AI agents
+├── .env.example          # Template for API keys
+├── requirements.txt      # Python dependencies
+├── .github/agents/       # VS Code custom agent config
+├── .vscode/              # VS Code settings & tasks
+├── directives/           # What to do (SOPs)
+└── execution/            # How to do it (scripts)
 ```
 
 ## Available Directives
@@ -301,9 +585,15 @@ def generate_readme(workspace_path: Path, agent_type: dict, agent_name: str) -> 
         content += f"- `{var}`\n"
     
     if not agent_type.get('env_vars'):
-        content += "- Add your own as needed\n"
+        content += "- None required for this agent type\n"
     
     content += """
+## Google Credentials (if using Google Sheets)
+
+If your agent uses Google Sheets scripts:
+1. Place `credentials.json` in this folder
+2. Run any sheet script once to generate `token.json`
+
 ---
 
 *This workspace was generated from the [DOE Framework](https://github.com/vjvarada/DOE-Framework-Agentic-AI)*
@@ -554,6 +844,9 @@ def create_agent_workspace(
     # Generate .gitignore
     generate_gitignore(workspace_path)
     
+    # Generate setup scripts (one-command setup)
+    generate_setup_script(workspace_path, name, packages)
+    
     # Generate README
     generate_readme(workspace_path, type_config, name)
     
@@ -564,17 +857,22 @@ def create_agent_workspace(
     generate_vscode_settings(workspace_path, name, slug)
     generate_vscode_extensions(workspace_path)
     
+    # Generate VS Code tasks for automated setup
+    generate_vscode_tasks(workspace_path, name)
+    
     print(f"\n{'=' * 60}")
     print(f"✓ WORKSPACE CREATED SUCCESSFULLY!")
     print(f"{'=' * 60}")
-    print(f"\nNext steps:")
-    print(f"  1. cd {workspace_path}")
-    print(f"  2. cp .env.example .env")
-    print(f"  3. Edit .env with your API keys")
-    print(f"  4. pip install -r requirements.txt")
-    print(f"  5. Open in VS Code - the custom agent is ready to use!")
-    print(f"     (Find it in Copilot Chat agent dropdown)")
-    print(f"     VS Code will prompt to install recommended extensions.")
+    print(f"\nQuick Start:")
+    print(f"  cd \"{workspace_path}\"")
+    print(f"  .\\setup.ps1              # One-command setup (Windows)")
+    print(f"  # OR: chmod +x setup.sh && ./setup.sh  (macOS/Linux)")
+    print(f"")
+    print(f"Then open in VS Code:")
+    print(f"  code .")
+    print(f"")
+    print(f"The agent '{name}' will appear in Copilot Chat dropdown.")
+    print(f"VS Code will prompt to install recommended extensions.")
     print()
     
     return workspace_path
