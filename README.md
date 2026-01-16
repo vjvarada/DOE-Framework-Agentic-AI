@@ -117,10 +117,19 @@ python execution/create_agent_workspace.py \
 ### After Generation
 
 1. **Copy** the workspace from `outputs/` to your desired location
-2. **Configure** `.env` with your API keys
-3. **Install** dependencies: `pip install -r requirements.txt`
-4. **Open** in VS Code with GitHub Copilot
-5. **Start** using your specialized agent!
+2. **Open** the new workspace folder in VS Code
+3. **Configure the agent** — Point GitHub Copilot to the workspace's `AGENTS.md`:
+   - Open Copilot Chat Panel (`Ctrl+Shift+I`)
+   - Click the gear icon (⚙️) → "Configure Instructions"
+   - Select the `AGENTS.md` file in your new workspace
+   - See [Step 2b: Set Up Custom Agent Instructions](#step-2-configure-github-copilot-custom-agent-manual-steps-required) for detailed steps
+4. **Set up environment** — Copy and configure API keys:
+   ```powershell
+   cp .env.example .env
+   # Edit .env with your API keys
+   ```
+5. **Install** dependencies: `pip install -r requirements.txt`
+6. **Start** using your specialized agent!
 
 ---
 
