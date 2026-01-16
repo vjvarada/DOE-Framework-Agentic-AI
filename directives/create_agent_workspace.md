@@ -86,6 +86,7 @@ The workspace will be created at `outputs/{agent-name}/` with:
 - `README.md` - Getting started guide
 - `.env.example` - Required environment variables
 - `requirements.txt` - Python dependencies
+- `.github/agents/{name}.agent.md` - **VS Code custom agent (auto-generated)**
 - `directives/` - Relevant SOPs
 - `execution/` - Relevant scripts
 - `.gitignore` - Standard ignores
@@ -96,10 +97,12 @@ Tell the user:
 2. To copy it to their desired location
 3. To set up their `.env` file
 4. To install dependencies with `pip install -r requirements.txt`
-5. To open in VS Code with GitHub Copilot
+5. To open in VS Code — **the custom agent is already configured and ready to use**
+6. To select their agent from the Copilot Chat agent dropdown (no manual setup needed)
 
 ## Output
 - Complete agent workspace in `outputs/{agent-name}/`
+- Ready-to-use VS Code custom agent in `.github/agents/`
 - Ready to be copied and used independently
 
 ## Edge Cases

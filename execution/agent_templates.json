@@ -3,6 +3,7 @@
     "lead_generation": {
       "name": "Lead Generation Agent",
       "description": "Scrapes, enriches, and manages leads from Google Maps, SERP, and other sources",
+      "copilot_tools": ["search", "fetch", "terminal", "editFiles", "codebase"],
       "directives": [
         "gmaps_lead_generation.md",
         "google_serp_lead_scraper.md",
@@ -44,6 +45,7 @@
     "email_automation": {
       "name": "Email Automation Agent",
       "description": "Automates cold email campaigns, auto-replies, and client communication via Instantly.ai",
+      "copilot_tools": ["search", "fetch", "terminal", "editFiles"],
       "directives": [
         "instantly_autoreply.md"
       ],
@@ -74,6 +76,7 @@
     "freelance_proposals": {
       "name": "Freelance & Proposals Agent",
       "description": "Scrapes Upwork jobs and generates winning proposals using AI",
+      "copilot_tools": ["search", "fetch", "terminal", "editFiles", "codebase"],
       "directives": [
         "upwork_scrape_apply.md",
         "create_proposal.md"
@@ -110,6 +113,7 @@
     "video_editing": {
       "name": "Video Editing Agent",
       "description": "Automates video editing tasks like jump cuts using voice activity detection",
+      "copilot_tools": ["terminal", "editFiles"],
       "directives": [
         "jump_cut_vad.md"
       ],
@@ -130,6 +134,7 @@
     "crm_integration": {
       "name": "CRM Integration Agent",
       "description": "Manages data flow between Google Sheets, webhooks, and cloud services",
+      "copilot_tools": ["search", "fetch", "terminal", "editFiles"],
       "directives": [],
       "scripts": [
         "read_sheet.py",
@@ -157,6 +162,7 @@
     "full_stack": {
       "name": "Full Stack Agent",
       "description": "Complete agent with ALL capabilities - lead gen, email, proposals, video, and CRM",
+      "copilot_tools": ["search", "fetch", "terminal", "editFiles", "codebase", "usages"],
       "directives": [
         "gmaps_lead_generation.md",
         "google_serp_lead_scraper.md",
@@ -199,6 +205,7 @@
     "custom": {
       "name": "Custom Agent",
       "description": "Minimal base setup - add your own directives and scripts",
+      "copilot_tools": ["search", "fetch", "terminal", "editFiles"],
       "directives": [],
       "scripts": [
         "read_sheet.py",
@@ -226,14 +233,16 @@
     "folders": [
       "directives",
       "execution",
-      ".tmp"
+      ".tmp",
+      ".github/agents"
     ],
     "files": {
       "AGENTS.md": "template",
       ".env.example": "generated",
       "requirements.txt": "generated",
       ".gitignore": "static",
-      "README.md": "generated"
+      "README.md": "generated",
+      ".github/agents/{slug}.agent.md": "generated"
     }
   }
 }

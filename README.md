@@ -91,16 +91,21 @@ python execution/create_agent_workspace.py --name "My Agent" --type lead_generat
 
 ```
 outputs/my-agent/
-├── AGENTS.md           # Customized system prompt
-├── README.md           # Getting started guide
-├── .env.example        # Required API keys template
-├── requirements.txt    # Python dependencies
-├── .gitignore          # Standard ignores
-├── directives/         # Relevant SOPs only
+├── AGENTS.md                    # Customized system prompt
+├── README.md                    # Getting started guide
+├── .env.example                 # Required API keys template
+├── requirements.txt             # Python dependencies
+├── .gitignore                   # Standard ignores
+├── .github/
+│   └── agents/
+│       └── my-agent.agent.md    # ✨ VS Code custom agent (auto-generated)
+├── directives/                  # Relevant SOPs only
 │   └── *.md
-└── execution/          # Relevant scripts only
+└── execution/                   # Relevant scripts only
     └── *.py
 ```
+
+> **✨ New:** The generator now creates a ready-to-use VS Code custom agent file (`.agent.md`) automatically. When you open the workspace in VS Code, the agent appears in the Copilot Chat agent dropdown immediately—no manual setup required!
 
 ### Combining Capabilities
 
@@ -118,13 +123,11 @@ python execution/create_agent_workspace.py \
 
 1. **Copy** the workspace from `outputs/` to your desired location
 2. **Open** the new workspace folder in VS Code
-3. **Configure the agent** — Create a custom agent for this workspace:
+3. **Select your agent** — The custom agent is already configured!
    - Open Copilot Chat Panel (`Ctrl+Shift+I`)
-   - Click the agent dropdown → "Configure Custom Agents" → "Create new custom agent"
-   - Choose **Workspace** as the storage location (creates `.github/agents/` folder)
-   - Name it (e.g., `doe-agent`) and configure the `.agent.md` file
-   - Reference the workspace's `AGENTS.md` in your agent instructions
-   - See [Step 2c: Create a Custom Agent](#step-2-configure-github-copilot-manual-steps-required) for detailed steps
+   - Click the **agent dropdown** at the top of the chat panel
+   - Select your generated agent (e.g., "My Lead Bot")
+   - Start chatting with your specialized agent immediately
 4. **Set up environment** — Copy and configure API keys:
    ```powershell
    cp .env.example .env
@@ -132,6 +135,8 @@ python execution/create_agent_workspace.py \
    ```
 5. **Install** dependencies: `pip install -r requirements.txt`
 6. **Start** using your specialized agent!
+
+> **✨ Zero-Config Setup:** The generator creates a `.github/agents/*.agent.md` file that VS Code automatically detects. No manual agent creation required!
 
 ---
 

@@ -61,7 +61,7 @@ def slugify(name: str) -> str:
 
 def create_workspace_structure(workspace_path: Path) -> None:
     """Create the basic folder structure."""
-    folders = ["directives", "execution", ".tmp"]
+    folders = ["directives", "execution", ".tmp", ".github/agents"]
     for folder in folders:
         (workspace_path / folder).mkdir(parents=True, exist_ok=True)
     print(f"  ✓ Created folder structure")
@@ -315,6 +315,79 @@ def generate_readme(workspace_path: Path, agent_type: dict, agent_name: str) -> 
     print(f"  ✓ Generated README.md")
 
 
+def generate_custom_agent_file(workspace_path: Path, agent_type: dict, agent_name: str, slug: str) -> None:
+    """
+    Generate a VS Code custom agent file (.agent.md) in .github/agents/.
+    
+    This creates a ready-to-use custom agent for GitHub Copilot that users can
+    immediately switch to in VS Code without any manual configuration.
+    """
+    # Get Copilot tools for this agent type
+    tools = agent_type.get('copilot_tools', ['search', 'fetch', 'terminal', 'editFiles'])
+    tools_str = str(tools).replace("'", '"')  # Convert to JSON-style array
+    
+    # Build the agent file content with YAML frontmatter
+    content = f"""---
+description: {agent_type['description']}
+name: {agent_name}
+tools: {tools_str}
+---
+# {agent_name}
+
+{agent_type['system_prompt_additions']}
+
+## Operating Framework
+
+You operate within the **DOE Framework** (Directive, Orchestration, Execution):
+
+1. **Directives** (`directives/`): SOPs in Markdown that define WHAT to do
+2. **Orchestration** (You): Read directives, make routing decisions, call execution scripts
+3. **Execution** (`execution/`): Deterministic Python scripts that do the actual work
+
+## Core Principles
+
+1. **Check for existing tools first** - Before writing a script, check `execution/` for existing solutions
+2. **Self-anneal when things break** - Fix errors, update scripts, test, and document learnings in directives
+3. **Reserve LLM for judgment** - Use scripts for mechanical operations; they're faster and deterministic
+
+## Available Resources
+
+**Directives (SOPs):**
+"""
+    
+    # List directives
+    for directive in agent_type.get('directives', []):
+        directive_name = directive.replace('.md', '').replace('_', ' ').title()
+        content += f"- `directives/{directive}` - {directive_name}\n"
+    
+    if not agent_type.get('directives'):
+        content += "- Create your own directives in `directives/`\n"
+    
+    content += """
+**Key Files:**
+- `AGENTS.md` - Full system prompt and framework details
+- `.env` - API keys (copy from `.env.example`)
+- `requirements.txt` - Python dependencies
+
+## Workflow
+
+When given a task:
+1. Check if a relevant directive exists in `directives/`
+2. Read the directive to understand the process
+3. Execute the appropriate scripts from `execution/`
+4. Handle errors by fixing and documenting
+5. Return deliverables (usually Google Sheet URLs or file outputs)
+
+For detailed instructions, read the `AGENTS.md` file in this workspace.
+"""
+    
+    agent_file_path = workspace_path / ".github" / "agents" / f"{slug}.agent.md"
+    with open(agent_file_path, "w", encoding="utf-8") as f:
+        f.write(content)
+    
+    print(f"  ✓ Generated custom agent file: .github/agents/{slug}.agent.md")
+
+
 def create_agent_workspace(
     name: str,
     agent_type: str,
@@ -391,6 +464,9 @@ def create_agent_workspace(
     # Generate README
     generate_readme(workspace_path, type_config, name)
     
+    # Generate VS Code custom agent file (.github/agents/*.agent.md)
+    generate_custom_agent_file(workspace_path, type_config, name, slug)
+    
     print(f"\n{'=' * 60}")
     print(f"✓ WORKSPACE CREATED SUCCESSFULLY!")
     print(f"{'=' * 60}")
@@ -399,7 +475,8 @@ def create_agent_workspace(
     print(f"  2. cp .env.example .env")
     print(f"  3. Edit .env with your API keys")
     print(f"  4. pip install -r requirements.txt")
-    print(f"  5. Open in VS Code and start using your agent!")
+    print(f"  5. Open in VS Code - the custom agent is ready to use!")
+    print(f"     (Find it in Copilot Chat agent dropdown)")
     print()
     
     return workspace_path
