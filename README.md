@@ -318,7 +318,7 @@ code --install-extension ms-python.vscode-pylance
    - Alternative: Create `.github/copilot-instructions.md` (GitHub convention)
 
 **What CAN be automated** (agent creates these files):
-- Instruction files ([AGENTS.md](AGENTS.md), [CLAUDE.md](CLAUDE.md))
+- Instruction files ([AGENTS.md](AGENTS.md))
 - Folder structure (`directives/`, `execution/`, `.tmp/`)
 - Configuration files (`.env` template, `webhooks.json`)
 
@@ -412,7 +412,7 @@ SLACK_WEBHOOK_URL=your_slack_webhook_here
 
 ### Step 6: Verify Agent System Prompt
 
-The agent reads [AGENTS.md](AGENTS.md) or [CLAUDE.md](CLAUDE.md) at the start of every conversation. These files teach the agent:
+The agent reads [AGENTS.md](AGENTS.md) at the start of every conversation. This file teaches the agent:
 - The DOE framework architecture
 - How to read directives and call execution scripts
 - Self-annealing behavior for error handling
@@ -446,7 +446,6 @@ This workspace is already configured with working examples. Here's what each fil
 | File | Purpose | View It |
 |------|---------|---------|
 | [AGENTS.md](AGENTS.md) | Universal system prompt for all AI agents | Main agent instructions |
-| [CLAUDE.md](CLAUDE.md) | Claude-specific system prompt with webhooks | Extended Claude config |
 | [requirements.txt](requirements.txt) | Python dependencies | `pip install -r requirements.txt` |
 | [package.json](package.json) | Node.js dependencies (Trigger.dev) | `npm install` |
 | `.env` | API keys and secrets (create this yourself) | Not committed to git |
@@ -1316,9 +1315,9 @@ This workspace supports two cloud deployment options:
 
 This workspace includes [execution/modal_webhook.py](execution/modal_webhook.py) for Modal cloud deployment.
 
-### Cloud Webhooks Architecture (from CLAUDE.md)
+### Cloud Webhooks Architecture
 
-From [CLAUDE.md](CLAUDE.md):
+From [AGENTS.md](AGENTS.md):
 
 ```markdown
 ## Cloud Webhooks (Modal)
@@ -1384,7 +1383,7 @@ modal deploy execution/modal_webhook.py
 
 **Step 4: Get Your Endpoint URLs**
 
-From [CLAUDE.md](CLAUDE.md):
+Endpoint format:
 ```
 Endpoints:
 - https://[your-username]--claude-orchestrator-list-webhooks.modal.run - List webhooks
@@ -1404,7 +1403,6 @@ def weekly_report():
 
 ### Monitoring
 
-From [CLAUDE.md](CLAUDE.md):
 > **All webhook activity streams to Slack in real-time.**
 
 Configure your `SLACK_WEBHOOK_URL` in `.env` for notifications.
@@ -1683,9 +1681,8 @@ This is the power of accumulating workflows—tiny problems that bug you become 
 
 ```
 DOE Framework Agentic AI/
-├── 📄 AGENTS.md                      # Universal system prompt
-├── 📄 CLAUDE.md                      # Claude-specific prompt + webhook docs
-├── 📄 Agentic_Workflows_Tutorial.md  # This tutorial
+├── 📄 AGENTS.md                      # Universal system prompt for AI agents
+├── 📄 README.md                      # This tutorial
 ├── 📄 requirements.txt               # Python dependencies (pip install -r)
 ├── 📄 package.json                   # Node.js dependencies (npm install)
 ├── 📁 directives/                    # The "WHAT" layer

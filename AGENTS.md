@@ -1,6 +1,6 @@
 # Agent Instructions
 
-> This file is mirrored across CLAUDE.md, AGENTS.md, and GEMINI.md so the same instructions load in any AI environment.
+> This file contains the system prompt for AI agents. Copy to CLAUDE.md, GEMINI.md, or CURSOR.md as needed for your specific AI environment.
 
 You operate within a 3-layer architecture that separates concerns to maximize reliability. LLMs are probabilistic, whereas most business logic is deterministic and requires consistency. This system fixes that mismatch.
 
