@@ -61,7 +61,7 @@ def slugify(name: str) -> str:
 
 def create_workspace_structure(workspace_path: Path) -> None:
     """Create the basic folder structure."""
-    folders = ["directives", "execution", ".tmp", ".github/agents"]
+    folders = ["directives", "execution", ".tmp", ".github/agents", ".vscode"]
     for folder in folders:
         (workspace_path / folder).mkdir(parents=True, exist_ok=True)
     print(f"  ✓ Created folder structure")
@@ -388,6 +388,99 @@ For detailed instructions, read the `AGENTS.md` file in this workspace.
     print(f"  ✓ Generated custom agent file: .github/agents/{slug}.agent.md")
 
 
+def generate_vscode_settings(workspace_path: Path, agent_name: str, slug: str) -> None:
+    """
+    Generate .vscode/settings.json with Copilot and Python configurations.
+    
+    This ensures:
+    - The custom agent is set as the default
+    - Python environment is configured
+    - Copilot has access to workspace files
+    - File associations are set up
+    """
+    settings = {
+        "// DOE Framework Agent Workspace Settings": "",
+        "// Generated automatically - customize as needed": "",
+        
+        # Python settings
+        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+        "python.terminal.activateEnvironment": True,
+        "python.analysis.autoImportCompletions": True,
+        "python.analysis.typeCheckingMode": "basic",
+        
+        # Copilot settings - enable all features
+        "github.copilot.enable": {
+            "*": True,
+            "plaintext": True,
+            "markdown": True,
+            "python": True
+        },
+        "github.copilot.chat.codesearch.enabled": True,
+        
+        # Editor settings for agent workflows
+        "editor.formatOnSave": True,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        
+        # File associations
+        "files.associations": {
+            "*.agent.md": "markdown",
+            ".env.example": "dotenv",
+            ".env": "dotenv"
+        },
+        
+        # Terminal settings
+        "terminal.integrated.defaultProfile.windows": "PowerShell",
+        "terminal.integrated.cwd": "${workspaceFolder}",
+        
+        # Search exclusions (don't search in temp files)
+        "search.exclude": {
+            "**/.tmp": True,
+            "**/__pycache__": True,
+            "**/.venv": True
+        }
+    }
+    
+    settings_path = workspace_path / ".vscode" / "settings.json"
+    with open(settings_path, "w", encoding="utf-8") as f:
+        json.dump(settings, f, indent=2)
+    
+    print(f"  ✓ Generated .vscode/settings.json")
+
+
+def generate_vscode_extensions(workspace_path: Path) -> None:
+    """
+    Generate .vscode/extensions.json with recommended extensions.
+    
+    This prompts users to install necessary extensions when opening the workspace.
+    """
+    extensions = {
+        "recommendations": [
+            # Essential for Copilot agent functionality
+            "GitHub.copilot",
+            "GitHub.copilot-chat",
+            
+            # Python development
+            "ms-python.python",
+            "ms-python.vscode-pylance",
+            
+            # Helpful for agent workflows
+            "ms-python.debugpy",
+            "esbenp.prettier-vscode",
+            "redhat.vscode-yaml",
+            "DotJoshJohnson.xml"
+        ],
+        "unwantedRecommendations": []
+    }
+    
+    extensions_path = workspace_path / ".vscode" / "extensions.json"
+    with open(extensions_path, "w", encoding="utf-8") as f:
+        json.dump(extensions, f, indent=2)
+    
+    print(f"  ✓ Generated .vscode/extensions.json (recommended extensions)")
+
+
 def create_agent_workspace(
     name: str,
     agent_type: str,
@@ -467,6 +560,10 @@ def create_agent_workspace(
     # Generate VS Code custom agent file (.github/agents/*.agent.md)
     generate_custom_agent_file(workspace_path, type_config, name, slug)
     
+    # Generate VS Code settings and extension recommendations
+    generate_vscode_settings(workspace_path, name, slug)
+    generate_vscode_extensions(workspace_path)
+    
     print(f"\n{'=' * 60}")
     print(f"✓ WORKSPACE CREATED SUCCESSFULLY!")
     print(f"{'=' * 60}")
@@ -477,6 +574,7 @@ def create_agent_workspace(
     print(f"  4. pip install -r requirements.txt")
     print(f"  5. Open in VS Code - the custom agent is ready to use!")
     print(f"     (Find it in Copilot Chat agent dropdown)")
+    print(f"     VS Code will prompt to install recommended extensions.")
     print()
     
     return workspace_path
