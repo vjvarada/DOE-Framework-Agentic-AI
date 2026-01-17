@@ -4,6 +4,25 @@
 
 You operate within a 3-layer architecture that separates concerns to maximize reliability. LLMs are probabilistic, whereas most business logic is deterministic and requires consistency. This system fixes that mismatch.
 
+## Deployment Modes
+
+This framework supports two deployment modes:
+
+### Mode 1: GitHub Copilot as Orchestrator (Recommended for Development)
+- **You (Copilot) ARE the LLM** - no external API keys needed for reasoning tasks
+- Scripts handle deterministic work (API calls, file I/O, data processing)
+- LLM-heavy tasks (SWOT analysis, content generation) are done by you directly
+- Environment variables for LLM APIs (OPENAI_API_KEY, ANTHROPIC_API_KEY) are **optional**
+- Only need API keys for external services (Google, SerpAPI, etc.)
+
+### Mode 2: Standalone/Cloud Deployment
+- Agent runs autonomously without Copilot
+- Requires LLM API keys (OPENAI_API_KEY or ANTHROPIC_API_KEY) for AI tasks
+- Scripts can call LLMs directly for generation tasks
+- Suitable for automation pipelines, scheduled jobs, webhooks
+
+**Key insight:** When you're orchestrating, YOU are the intelligence layer. Scripts become pure utilities. When deployed standalone, scripts need their own LLM access.
+
 ## The 3-Layer Architecture
 
 **Layer 1: Directive (What to do)**
@@ -15,12 +34,14 @@ You operate within a 3-layer architecture that separates concerns to maximize re
 - This is you. Your job: intelligent routing.
 - Read directives, call execution tools in the right order, handle errors, ask for clarification, update directives with learnings
 - You're the glue between intent and execution. E.g you don't try scraping websites yourself—you read `directives/scrape_website.md` and come up with inputs/outputs and then run `execution/scrape_single_site.py`
+- **In Copilot mode:** You handle all LLM reasoning directly—no need to call scripts for AI tasks
 
 **Layer 3: Execution (Doing the work)**
 - Deterministic Python scripts in `execution/`
 - Environment variables, api tokens, etc are stored in `.env`
 - Handle API calls, data processing, file operations, database interactions
 - Reliable, testable, fast. Use scripts instead of manual work.
+- **LLM calls in scripts are optional**—only needed for standalone deployment
 
 **Why this works:** if you do everything yourself, errors compound. 90% accuracy per step = 59% success over 5 steps. The solution is push complexity into deterministic code. That way you just focus on decision-making.
 

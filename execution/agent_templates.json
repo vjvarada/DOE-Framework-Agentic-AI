@@ -1,4 +1,16 @@
 {
+  "deployment_modes": {
+    "copilot": {
+      "description": "GitHub Copilot acts as the orchestrator/LLM - no external API keys needed for AI tasks",
+      "llm_keys_required": false,
+      "note": "Copilot handles all reasoning tasks directly. Scripts output prompts for Copilot to process."
+    },
+    "standalone": {
+      "description": "Agent runs autonomously without Copilot - requires LLM API keys",
+      "llm_keys_required": true,
+      "note": "Scripts call LLMs directly for generation tasks. Suitable for automation pipelines."
+    }
+  },
   "agent_types": {
     "lead_generation": {
       "name": "Lead Generation Agent",
@@ -34,12 +46,15 @@
         "openai",
         "anthropic"
       ],
-      "env_vars": [
+      "env_vars_required": [
         "APIFY_API_TOKEN",
-        "GOOGLE_SHEETS_CREDENTIALS_FILE",
+        "GOOGLE_SHEETS_CREDENTIALS_FILE"
+      ],
+      "env_vars_optional": [
         "OPENAI_API_KEY",
         "ANTHROPIC_API_KEY"
       ],
+      "env_vars_optional_note": "LLM keys only needed for standalone mode. When using Copilot as orchestrator, Copilot handles AI tasks directly.",
       "system_prompt_additions": "You specialize in lead generation workflows. Your primary tasks involve scraping business data from Google Maps, Google SERP, and other sources, enriching lead data with emails and contact info, and managing leads in Google Sheets."
     },
     "email_automation": {
@@ -65,12 +80,15 @@
         "google-auth-httplib2",
         "google-auth-oauthlib"
       ],
-      "env_vars": [
+      "env_vars_required": [
         "INSTANTLY_API_KEY",
-        "OPENAI_API_KEY",
-        "ANTHROPIC_API_KEY",
         "GOOGLE_SHEETS_CREDENTIALS_FILE"
       ],
+      "env_vars_optional": [
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY"
+      ],
+      "env_vars_optional_note": "LLM keys only needed for standalone mode. When using Copilot as orchestrator, Copilot handles AI tasks directly.",
       "system_prompt_additions": "You specialize in email automation workflows. Your primary tasks involve managing cold email campaigns through Instantly.ai, crafting personalized auto-replies, and tracking campaign performance."
     },
     "freelance_proposals": {
@@ -101,13 +119,16 @@
         "google-auth-oauthlib",
         "pandadoc-python-client"
       ],
-      "env_vars": [
+      "env_vars_required": [
         "APIFY_API_TOKEN",
-        "OPENAI_API_KEY",
-        "ANTHROPIC_API_KEY",
         "PANDADOC_API_KEY",
         "GOOGLE_SHEETS_CREDENTIALS_FILE"
       ],
+      "env_vars_optional": [
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY"
+      ],
+      "env_vars_optional_note": "LLM keys only needed for standalone mode. When using Copilot as orchestrator, Copilot handles AI tasks directly.",
       "system_prompt_additions": "You specialize in freelance automation workflows. Your primary tasks involve scraping job postings from Upwork, analyzing job requirements, generating tailored proposals, and tracking application status."
     },
     "video_editing": {
@@ -129,9 +150,11 @@
         "numpy",
         "python-dotenv"
       ],
-      "env_vars": [
+      "env_vars_required": [],
+      "env_vars_optional": [
         "OPENAI_API_KEY"
       ],
+      "env_vars_optional_note": "OPENAI_API_KEY only needed for Whisper transcription in standalone mode. Copilot can transcribe directly.",
       "system_prompt_additions": "You specialize in video editing automation. Your primary tasks involve removing silences from talking-head videos using Voice Activity Detection (Silero VAD), adding jump cuts to create dynamic content, transcribing videos using OpenAI Whisper, generating smart filenames based on content, applying audio enhancement (EQ, compression, loudness normalization), and adding transitions between cuts. Use video_editor_pipeline.py for complete editing with transcription and smart naming. Use jump_cut_vad_singlepass.py for quick silence removal. Use insert_3d_transition.py for 3D swivel effects. Key parameters: --min-silence (0.3 for aggressive, 1.0 for natural), --padding (50 for tight, 200 for relaxed), --enhance-audio for professional quality, --whisper-model medium/large for better transcription."
     },
     "crm_integration": {
@@ -154,12 +177,15 @@
         "requests",
         "python-dotenv"
       ],
-      "env_vars": [
-        "GOOGLE_SHEETS_CREDENTIALS_FILE",
+      "env_vars_required": [
+        "GOOGLE_SHEETS_CREDENTIALS_FILE"
+      ],
+      "env_vars_optional": [
         "MODAL_TOKEN_ID",
         "MODAL_TOKEN_SECRET",
         "SLACK_WEBHOOK_URL"
       ],
+      "env_vars_optional_note": "Modal and Slack keys only needed if using those services.",
       "system_prompt_additions": "You specialize in CRM and data integration workflows. Your primary tasks involve reading and writing data to Google Sheets, handling webhooks, and orchestrating data flow between cloud services."
     },
     "full_stack": {
@@ -192,18 +218,59 @@
         "pydub",
         "numpy"
       ],
-      "env_vars": [
+      "env_vars_required": [
         "APIFY_API_TOKEN",
         "GOOGLE_SHEETS_CREDENTIALS_FILE",
+        "INSTANTLY_API_KEY"
+      ],
+      "env_vars_optional": [
         "OPENAI_API_KEY",
         "ANTHROPIC_API_KEY",
-        "INSTANTLY_API_KEY",
         "PANDADOC_API_KEY",
         "MODAL_TOKEN_ID",
         "MODAL_TOKEN_SECRET",
         "SLACK_WEBHOOK_URL"
       ],
+      "env_vars_optional_note": "LLM keys only needed for standalone mode. PandaDoc, Modal, and Slack are optional based on features used.",
       "system_prompt_additions": "You are a full-stack automation agent with capabilities across lead generation, email automation, freelance proposals, video editing, and CRM integration. Choose the appropriate tools based on the task at hand."
+    },
+    "business_planning": {
+      "name": "Business Planning Agent",
+      "description": "Creates comprehensive business plans with market research, SWOT analysis, financial projections, and business model canvases using Google Docs and Sheets",
+      "copilot_tools": ["codebase", "changes", "editFiles", "extensions", "fetch", "findTestFiles", "githubRepo", "new", "openSimpleBrowser", "problems", "runCommands", "runNotebooks", "runTasks", "search", "searchResults", "terminalLastCommand", "terminalSelection", "terminal", "testFailure", "usages", "vscodeAPI"],
+      "directives": [
+        "business_planning.md"
+      ],
+      "scripts": [
+        "create_google_doc.py",
+        "update_google_doc.py",
+        "serp_market_research.py",
+        "generate_business_plan.py",
+        "read_sheet.py",
+        "append_to_sheet.py",
+        "update_sheet.py"
+      ],
+      "packages": [
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib",
+        "google-search-results",
+        "gspread",
+        "requests",
+        "python-dotenv",
+        "openai",
+        "anthropic"
+      ],
+      "env_vars_required": [
+        "SERPAPI_API_KEY",
+        "GOOGLE_APPLICATION_CREDENTIALS"
+      ],
+      "env_vars_optional": [
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY"
+      ],
+      "env_vars_optional_note": "LLM keys only needed for standalone mode. When using Copilot as orchestrator, Copilot handles SWOT analysis, financial projections, and business model canvas generation directly.",
+      "system_prompt_additions": "You specialize in business planning and strategy automation. Your primary tasks involve conducting market research using SerpAPI, generating SWOT analyses, creating financial projections, building business model canvases, and compiling comprehensive business plans. You deliver outputs as professional Google Docs and track financial data in Google Sheets. Use serp_market_research.py for market intelligence (modes: search, competitors, trends, news). Use generate_business_plan.py for business analysis (modes: swot, financials, canvas, compile) - in Copilot mode, use --copilot flag to get prompts for direct generation. Use create_google_doc.py and update_google_doc.py for document management."
     },
     "custom": {
       "name": "Custom Agent",
@@ -224,11 +291,14 @@
         "openai",
         "anthropic"
       ],
-      "env_vars": [
-        "OPENAI_API_KEY",
-        "ANTHROPIC_API_KEY",
+      "env_vars_required": [
         "GOOGLE_SHEETS_CREDENTIALS_FILE"
       ],
+      "env_vars_optional": [
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY"
+      ],
+      "env_vars_optional_note": "LLM keys only needed for standalone mode. When using Copilot as orchestrator, Copilot handles AI tasks directly.",
       "system_prompt_additions": "You are a custom automation agent. Your capabilities will be defined by the directives and scripts added to this workspace."
     }
   },

@@ -21,6 +21,9 @@ httpx>=0.28.0
 requests>=2.32.0
 html2text>=2024.2.0
 
+# Search & Market Research
+google-search-results>=2.4.0  # SerpAPI
+
 # Data Processing
 pandas>=2.2.0
 Pillow>=11.0.0
