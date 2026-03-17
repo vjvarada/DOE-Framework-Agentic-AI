@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>lesson_plan.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="lesson-plan-building-agents-with-the-doe-framework">Lesson Plan: Building Agents with the DOE Framework</h1>
+<h2 id="what-youll-learn">What You'll Learn</h2>
+<p>By the end of this lesson you'll be able to build a working AI agent from scratch using the DOE Framework — one that's reliable, self-healing, and easy to extend.</p>
+<hr>
+<h2 id="lesson-0-the-basics-for-non-technical-people">Lesson 0: The Basics (For Non-Technical People)</h2>
+<p>If you've never built software before, this section covers every concept you need. Read it once, refer back as needed. Once these click, the rest of the lesson plan is easy.</p>
+<hr>
+<h3 id="01-what-is-an-%22agent%22">0.1 What Is an &quot;Agent&quot;?</h3>
+<p>An agent is software that can do work on your behalf, making decisions along the way.</p>
+<ul>
+<li>A <strong>script</strong> does one fixed thing every time you run it (like a recipe).</li>
+<li>An <strong>agent</strong> reads the situation, decides what to do, runs the right scripts, and handles problems — like a capable employee following an SOP.</li>
+</ul>
+<p>In this framework, the &quot;brain&quot; is an LLM (like GitHub Copilot), and the &quot;hands&quot; are Python scripts. The agent reads your instructions (directives), thinks about what to do, and then runs the right scripts in the right order.</p>
+<hr>
+<h3 id="02-what-is-an-llm">0.2 What Is an LLM?</h3>
+<p><strong>LLM</strong> stands for <strong>Large Language Model</strong>. It's the AI that powers tools like ChatGPT, Claude, and GitHub Copilot.</p>
+<ul>
+<li>It reads text, understands what you're asking, and generates useful responses.</li>
+<li>It's great at reasoning, writing, summarizing, and making decisions.</li>
+<li>It's <strong>not</strong> great at doing things repeatedly and consistently — that's why we pair it with scripts.</li>
+</ul>
+<p>When this framework says &quot;the orchestrator,&quot; it means the LLM — the AI brain making the decisions.</p>
+<hr>
+<h3 id="03-what-is-an-api">0.3 What Is an API?</h3>
+<p><strong>API</strong> stands for <strong>Application Programming Interface</strong>. It's how two pieces of software talk to each other.</p>
+<p>Think of a restaurant: you (the customer) don't walk into the kitchen. You tell the waiter what you want, the waiter tells the kitchen, and the kitchen sends back your food. The waiter is the API.</p>
+<pre class="hljs"><code><div>You (your script)  →  API  →  Service (Google, Stripe, etc.)
+       request      waiter        kitchen
+                      ←
+                   response
+                  (your food)
+</div></code></pre>
+<p><strong>Examples of APIs you'll use:</strong></p>
+<ul>
+<li><strong>Google Sheets API</strong> — read/write spreadsheet data from a script</li>
+<li><strong>SerpAPI</strong> — get Google search results as structured data</li>
+<li><strong>Apify API</strong> — run web scrapers in the cloud</li>
+<li><strong>Instantly API</strong> — manage email campaigns</li>
+<li><strong>OpenAI / Anthropic API</strong> — send a prompt to an LLM and get a response back</li>
+</ul>
+<p>Every external service your agent talks to, it talks to through an API.</p>
+<hr>
+<h3 id="04-what-is-an-api-key">0.4 What Is an API Key?</h3>
+<p>An API key is a <strong>password that identifies your account</strong> to a service.</p>
+<p>When your script calls the Google Sheets API, Google needs to know who's asking. The API key proves it's you (and lets the service bill you or enforce your usage limits).</p>
+<pre class="hljs"><code><div>Without API key:  &quot;Hey Google, give me spreadsheet data&quot;  →  ❌ Who are you?
+With API key:     &quot;Hey Google, here's my key: sk-abc123&quot;  →  ✅ Here's your data
+</div></code></pre>
+<p><strong>Key rules:</strong></p>
+<ul>
+<li><strong>Never share API keys publicly</strong> (not in GitHub repos, not in screenshots)</li>
+<li><strong>Store them in a <code>.env</code> file</strong> — a special file that holds secrets</li>
+<li><strong>Each service has its own key</strong> — you'll have one for SerpAPI, one for OpenAI, etc.</li>
+</ul>
+<p>Getting an API key usually means: sign up for the service → go to settings/developer section → create a key → copy it into your <code>.env</code> file.</p>
+<hr>
+<h3 id="05-what-is-a-env-file">0.5 What Is a <code>.env</code> File?</h3>
+<p>A <code>.env</code> file is a simple text file that stores your secrets (API keys, passwords, tokens) in one place.</p>
+<p>It looks like this:</p>
+<pre class="hljs"><code><div>SERPAPI_API_KEY=abc123yourkey
+OPENAI_API_KEY=sk-xyz789anotherkey
+GOOGLE_SHEETS_CREDENTIALS_FILE=credentials.json
+</div></code></pre>
+<p>Your Python scripts read from this file automatically, so you never hard-code secrets into your code.</p>
+<p><strong>Important:</strong> The <code>.env</code> file should <strong>never</strong> be uploaded to GitHub or shared. It stays on your machine only.</p>
+<hr>
+<h3 id="06-what-is-json">0.6 What Is JSON?</h3>
+<p><strong>JSON</strong> (JavaScript Object Notation) is the universal format for structured data. Almost every API sends and receives JSON.</p>
+<p>It looks like this:</p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"company"</span>: <span class="hljs-string">"Acme Inc"</span>,
+  <span class="hljs-attr">"industry"</span>: <span class="hljs-string">"SaaS"</span>,
+  <span class="hljs-attr">"employees"</span>: <span class="hljs-number">50</span>,
+  <span class="hljs-attr">"locations"</span>: [<span class="hljs-string">"New York"</span>, <span class="hljs-string">"London"</span>],
+  <span class="hljs-attr">"is_active"</span>: <span class="hljs-literal">true</span>
+}
+</div></code></pre>
+<p>Think of it as a really organized way to write a list of facts. It uses:</p>
+<ul>
+<li><code>{ }</code> for objects (a group of labeled values)</li>
+<li><code>[ ]</code> for arrays (a list of items)</li>
+<li><code>&quot;key&quot;: &quot;value&quot;</code> for each piece of data</li>
+</ul>
+<p>When a script saves results to <code>.tmp/results.json</code>, this is the format it uses. When another script reads that file, it knows exactly how to pull out the data it needs.</p>
+<hr>
+<h3 id="07-what-is-python">0.7 What Is Python?</h3>
+<p><strong>Python</strong> is a programming language. In this framework, all execution scripts are written in Python.</p>
+<p>You don't need to be a Python expert. You need to know:</p>
+<ol>
+<li>
+<p><strong>How to run a Python script:</strong></p>
+<pre class="hljs"><code><div>python execution/my_script.py --input &quot;hello&quot; --output .tmp/result.json
+</div></code></pre>
+<p>This tells Python to run the file <code>my_script.py</code> and pass it some inputs.</p>
+</li>
+<li>
+<p><strong>What <code>--arguments</code> are:</strong> Those <code>--input</code> and <code>--output</code> parts are called arguments. They tell the script what data to use and where to save results.</p>
+</li>
+<li>
+<p><strong>What <code>pip install</code> does:</strong> Python has a package manager called <code>pip</code>. When a script needs an extra library (like a tool to call Google's API), you install it with:</p>
+<pre class="hljs"><code><div>pip install google-api-python-client
+</div></code></pre>
+<p>The <code>requirements.txt</code> file lists all the packages an agent needs. Install them all at once:</p>
+<pre class="hljs"><code><div>pip install -r requirements.txt
+</div></code></pre>
+</li>
+</ol>
+<hr>
+<h3 id="08-what-is-the-terminal-command-line">0.8 What Is the Terminal (Command Line)?</h3>
+<p>The <strong>terminal</strong> is a text-based interface where you type commands to run things.</p>
+<p>Instead of clicking buttons in a graphical interface, you type:</p>
+<pre class="hljs"><code><div>python execution/scrape_leads.py --industry &quot;Plumbers&quot; --location &quot;New York&quot;
+</div></code></pre>
+<p>In VS Code, the terminal is built in — it's the panel at the bottom of the screen. You'll use it to:</p>
+<ul>
+<li>Run Python scripts</li>
+<li>Install packages</li>
+<li>Check if things are working</li>
+</ul>
+<p><strong>Don't be intimidated by it.</strong> The terminal is just a way to give your computer precise instructions. Every command in this lesson plan can be copy-pasted directly into a terminal.</p>
+<hr>
+<h3 id="09-what-is-oauth">0.9 What Is OAuth?</h3>
+<p>Some APIs (especially Google's) use <strong>OAuth</strong> instead of a simple API key. OAuth is a more secure way to grant access.</p>
+<p>The flow looks like this:</p>
+<ol>
+<li>You set up a project in Google Cloud Console</li>
+<li>You download a <code>credentials.json</code> file</li>
+<li>The first time you run a Google script, a browser window opens asking you to log in and grant permission</li>
+<li>Once you approve, it saves a <code>token.json</code> file so you don't have to log in again</li>
+</ol>
+<p>You'll see OAuth referenced when working with Google Sheets and Google Docs scripts.</p>
+<p><strong>In practice:</strong> You set it up once, and then it just works. If it stops working, delete <code>token.json</code> and redo step 3.</p>
+<hr>
+<h3 id="010-what-is-web-scraping">0.10 What Is Web Scraping?</h3>
+<p><strong>Web scraping</strong> is automatically extracting data from websites.</p>
+<p>Instead of manually visiting 500 business listings and copying names and phone numbers into a spreadsheet, a scraper does it in minutes.</p>
+<p>In this framework, scraping is handled by external services like <strong>Apify</strong> — you send them a search query, they run the scraper in the cloud, and send back structured data (JSON) with all the results.</p>
+<p>You don't need to write scraping code yourself. The scripts in <code>execution/</code> handle the API calls to these services.</p>
+<hr>
+<h3 id="011-what-is-a-webhook">0.11 What Is a Webhook?</h3>
+<p>A webhook is the reverse of an API call. Instead of your script asking a service for data, <strong>the service sends data to your script</strong> when something happens.</p>
+<pre class="hljs"><code><div>Normal API call:  Your script → &quot;Hey, any new leads?&quot; → Service
+Webhook:          Service → &quot;New lead just came in!&quot; → Your script
+</div></code></pre>
+<p><strong>Analogy:</strong> A regular API call is like checking your mailbox. A webhook is like the mailman ringing your doorbell.</p>
+<p>Use webhooks when you want your agent to react to events in real-time (e.g., a new form submission, a new email reply).</p>
+<hr>
+<h3 id="012-what-is-an-mcp-model-context-protocol">0.12 What Is an MCP (Model Context Protocol)?</h3>
+<p><strong>MCP</strong> is a standard that lets AI agents connect to external tools and data sources in a plug-and-play way.</p>
+<p>Think of it like USB for AI:</p>
+<ul>
+<li>Before USB, every device had a different connector. Printers, scanners, cameras — all different plugs.</li>
+<li>USB gave us one standard plug that works for everything.</li>
+<li><strong>MCP does the same thing for AI tools.</strong> Instead of every AI needing custom code to use Google Sheets, Slack, or a database, MCP provides one standard interface.</li>
+</ul>
+<p><strong>How it works in practice:</strong></p>
+<ol>
+<li>Someone builds an &quot;MCP server&quot; for a tool (e.g., Google Sheets, GitHub, a database)</li>
+<li>Your AI agent connects to it using the MCP standard</li>
+<li>The agent can now read/write data, call functions, and use that tool — without any custom integration code</li>
+</ol>
+<p><strong>Why it matters for this framework:</strong></p>
+<ul>
+<li>MCP servers can serve as additional execution tools alongside your Python scripts</li>
+<li>Instead of writing a new script for every service, you can plug in an MCP server</li>
+<li>The AI orchestrator sees MCP tools the same way it sees scripts — as things it can call to get work done</li>
+</ul>
+<p>You don't need MCP to get started. It's an advanced capability that becomes useful as you connect to more services.</p>
+<hr>
+<h3 id="013-what-is-git-and-github">0.13 What Is Git and GitHub?</h3>
+<p><strong>Git</strong> is a tool that tracks changes to your files over time — like &quot;Track Changes&quot; in Word, but for code.</p>
+<p><strong>GitHub</strong> is a website that stores your Git projects online so you can share them, back them up, and collaborate.</p>
+<p>Key concepts:</p>
+<ul>
+<li><strong>Repository (repo):</strong> A project folder tracked by Git</li>
+<li><strong>Commit:</strong> A saved snapshot of your changes (like a save point in a game)</li>
+<li><strong>Push:</strong> Upload your commits to GitHub</li>
+<li><strong>Pull:</strong> Download the latest changes from GitHub</li>
+<li><strong><code>.gitignore</code>:</strong> A file that tells Git what NOT to track (like <code>.env</code> and <code>token.json</code> — you never want secrets on GitHub)</li>
+</ul>
+<p>For this framework, Git ensures you don't lose your work and can undo mistakes. GitHub stores the agent workspace so you can access it from anywhere.</p>
+<hr>
+<h3 id="014-what-is-markdown">0.14 What Is Markdown?</h3>
+<p><strong>Markdown</strong> is a simple way to format text using plain characters.</p>
+<p>All the directives in this framework are written in Markdown (<code>.md</code> files). Here's the syntax:</p>
+<pre class="hljs"><code><div><span class="hljs-section"># Big Heading</span>
+<span class="hljs-section">## Smaller Heading</span>
+<span class="hljs-section">### Even Smaller</span>
+
+<span class="hljs-strong">**bold text**</span>
+<span class="hljs-emphasis">*italic text*</span>
+<span class="hljs-bullet">
+- </span>bullet point
+<span class="hljs-bullet">- </span>another point
+<span class="hljs-bullet">
+1. </span>numbered item
+<span class="hljs-bullet">2. </span>another item
+
+| Column 1 | Column 2 |
+|-----------|----------|
+| data      | data     |
+
+<span class="hljs-code">`inline code`</span>
+</div></code></pre>
+<p>You're already reading Markdown right now — this lesson plan is a <code>.md</code> file. VS Code renders it nicely, but it's really just plain text with some formatting characters.</p>
+<hr>
+<h3 id="015-putting-it-all-together">0.15 Putting It All Together</h3>
+<p>Here's how all these concepts connect when an agent runs:</p>
+<pre class="hljs"><code><div>You give Copilot a task (natural language)
+          ↓
+Copilot reads the directive (.md file in Markdown)
+          ↓
+Copilot decides which script to run (Python in execution/)
+          ↓
+The script loads secrets from .env (API keys)
+          ↓
+The script calls an external service (via API)
+          ↓
+The service authenticates you (API key or OAuth)
+          ↓
+Data comes back as JSON
+          ↓
+The script saves it to .tmp/ (intermediate)
+          ↓
+Another script uploads it to Google Sheets (deliverable, via API)
+          ↓
+Copilot returns the Sheet URL to you
+</div></code></pre>
+<p>Every concept from this section appears in that flow. Once you see how they connect, the rest of the framework is just details.</p>
+<hr>
+<h2 id="the-core-problem-this-framework-solves">The Core Problem This Framework Solves</h2>
+<p>AI models are probabilistic. Business logic needs to be consistent.</p>
+<p>If an AI does 5 steps and each step is 90% accurate, the end-to-end success rate is only <strong>59%</strong>. That's not usable for real work.</p>
+<p>The DOE Framework fixes this by keeping AI in charge of <em>decisions</em> and handing all <em>execution</em> off to deterministic Python scripts.</p>
+<hr>
+<h2 id="lesson-1-the-3-layer-architecture">Lesson 1: The 3-Layer Architecture</h2>
+<p>Every agent in this framework has exactly 3 layers. Learn these and everything else clicks.</p>
+<pre class="hljs"><code><div>┌─────────────────────────────────────────────┐
+│  Layer 1: DIRECTIVE  (directives/*.md)      │
+│  &quot;What to do&quot; — written in plain English    │
+├─────────────────────────────────────────────┤
+│  Layer 2: ORCHESTRATOR  (GitHub Copilot)    │
+│  &quot;Decide how to do it&quot; — the AI brain       │
+├─────────────────────────────────────────────┤
+│  Layer 3: EXECUTION  (execution/*.py)       │
+│  &quot;Actually do it&quot; — reliable Python scripts │
+└─────────────────────────────────────────────┘
+</div></code></pre>
+<h3 id="layer-1--directive">Layer 1 — Directive</h3>
+<p>A Markdown file that acts like an SOP (Standard Operating Procedure). It answers:</p>
+<ul>
+<li>What is the goal?</li>
+<li>What inputs are needed?</li>
+<li>Which scripts exist to help?</li>
+<li>What is the step-by-step workflow?</li>
+<li>What are common edge cases?</li>
+</ul>
+<p>Think of it as a job description for the agent.</p>
+<h3 id="layer-2--orchestrator">Layer 2 — Orchestrator</h3>
+<p>This is GitHub Copilot (or another LLM). Its only job is intelligent routing:</p>
+<ul>
+<li>Read the directive</li>
+<li>Decide the order to run things</li>
+<li>Call scripts with the right inputs</li>
+<li>Handle errors</li>
+<li>Update the directive when it learns something new</li>
+</ul>
+<p><strong>The orchestrator never does grunt work directly.</strong> It delegates to scripts.</p>
+<h3 id="layer-3--execution">Layer 3 — Execution</h3>
+<p>Python scripts that do exactly one thing reliably. They:</p>
+<ul>
+<li>Call APIs</li>
+<li>Read/write files</li>
+<li>Process data</li>
+<li>Upload to Google Sheets / Docs</li>
+</ul>
+<p>Scripts are deterministic — same inputs always produce the same outputs.</p>
+<hr>
+<h2 id="lesson-2-the-file-structure">Lesson 2: The File Structure</h2>
+<pre class="hljs"><code><div>your-agent/
+├── AGENTS.md              ← System prompt (tells Copilot the rules)
+├── .env                   ← API keys and secrets
+├── directives/
+│   └── my_task.md         ← Your SOP files
+├── execution/
+│   └── my_script.py       ← Your Python scripts
+└── .tmp/                  ← Temporary files (never commit)
+</div></code></pre>
+<p><strong>Key rule:</strong> Local files are for processing only. Final deliverables live in the cloud (Google Sheets, Google Docs, etc.) where the user can access them. Everything in <code>.tmp/</code> can be deleted and regenerated.</p>
+<hr>
+<h2 id="lesson-3-anatomy-of-a-directive">Lesson 3: Anatomy of a Directive</h2>
+<p>Open any file in <code>directives/</code> and you'll see the same structure every time.</p>
+<pre class="hljs"><code><div><span class="hljs-section"># Task Name</span>
+
+<span class="hljs-section">## Goal</span>
+One paragraph: what does this agent accomplish?
+
+<span class="hljs-section">## Inputs</span>
+| Input       | Required | Description            |
+|-------------|----------|------------------------|
+| Company Name| Yes      | Name of the business   |
+| Industry    | No       | e.g. "SaaS", "Retail"  |
+
+<span class="hljs-section">## Tools/Scripts</span>
+<span class="hljs-bullet">- </span><span class="hljs-code">`execution/script_name.py`</span> — what it does, what API key it needs
+
+<span class="hljs-section">## Workflow</span>
+Step-by-step numbered instructions the orchestrator follows.
+
+<span class="hljs-section">## Edge Cases</span>
+What to do when things go wrong.
+</div></code></pre>
+<p>That's it. No code, no configuration — just clear instructions.</p>
+<hr>
+<h2 id="lesson-4-anatomy-of-an-execution-script">Lesson 4: Anatomy of an Execution Script</h2>
+<p>Scripts follow a simple pattern:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 1. Load environment variables</span>
+<span class="hljs-keyword">from</span> dotenv <span class="hljs-keyword">import</span> load_dotenv
+load_dotenv()
+
+<span class="hljs-comment"># 2. Accept inputs via command-line arguments</span>
+<span class="hljs-keyword">import</span> argparse
+parser = argparse.ArgumentParser()
+parser.add_argument(<span class="hljs-string">"--input"</span>, required=<span class="hljs-literal">True</span>)
+parser.add_argument(<span class="hljs-string">"--output"</span>, required=<span class="hljs-literal">True</span>)
+args = parser.parse_args()
+
+<span class="hljs-comment"># 3. Do one thing reliably</span>
+results = call_some_api(args.input)
+
+<span class="hljs-comment"># 4. Write output to a file (usually .tmp/)</span>
+<span class="hljs-keyword">with</span> open(args.output, <span class="hljs-string">"w"</span>) <span class="hljs-keyword">as</span> f:
+    json.dump(results, f)
+
+print(<span class="hljs-string">f"Done. Output saved to <span class="hljs-subst">{args.output}</span>"</span>)
+</div></code></pre>
+<p><strong>Design rule:</strong> One script, one job. Keep scripts small and focused so they're easy to test and fix.</p>
+<hr>
+<h2 id="lesson-5-how-copilot-thinks-the-orchestration-loop">Lesson 5: How Copilot Thinks (The Orchestration Loop)</h2>
+<p>When you give Copilot a task, here's what it does internally:</p>
+<pre class="hljs"><code><div>1. READ the relevant directive in directives/
+2. IDENTIFY what inputs are needed — ask the user if missing
+3. RUN scripts in the order the directive specifies
+4. CHECK the output of each script
+5. DECIDE what to do next (or stop if done)
+6. HANDLE errors (fix → retest → update directive)
+7. DELIVER the final output to the user
+</div></code></pre>
+<p>Copilot never guesses how to do things — it reads the directive. This is why keeping directives accurate and up-to-date is so important.</p>
+<hr>
+<h2 id="lesson-6-self-annealing-how-the-system-gets-smarter">Lesson 6: Self-Annealing (How the System Gets Smarter)</h2>
+<p>When something breaks, you don't just fix it and move on. You make the system so it never breaks the same way again.</p>
+<pre class="hljs"><code><div>Error occurs
+     ↓
+Read the error message
+     ↓
+Fix the script
+     ↓
+Test the fix
+     ↓
+Update the directive with what you learned
+     ↓
+System is now stronger
+</div></code></pre>
+<p><strong>Example:</strong> A script hits an API rate limit.</p>
+<ul>
+<li>Fix: Add retry logic with exponential backoff</li>
+<li>Directive update: Add a note — <em>&quot;This API allows 10 requests/minute. The script handles rate limits automatically.&quot;</em></li>
+</ul>
+<p>Now anyone (or any AI) reading the directive knows about this constraint upfront.</p>
+<hr>
+<h2 id="lesson-7-build-your-first-agent-step-by-step">Lesson 7: Build Your First Agent (Step-by-Step)</h2>
+<p>Let's build a simple &quot;Hello World&quot; agent that scrapes some data and saves it to a Google Sheet.</p>
+<h3 id="step-1--write-the-directive">Step 1 — Write the Directive</h3>
+<p>Create <code>directives/my_first_agent.md</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-section"># My First Agent</span>
+
+<span class="hljs-section">## Goal</span>
+Scrape the top 10 results for a search query and save them to a Google Sheet.
+
+<span class="hljs-section">## Inputs</span>
+| Input        | Required | Description                  |
+|--------------|----------|------------------------------|
+| Search Query | Yes      | The topic to search for      |
+| Sheet ID     | Yes      | Google Sheet to write output |
+
+<span class="hljs-section">## Tools/Scripts</span>
+<span class="hljs-bullet">- </span><span class="hljs-code">`execution/search_web.py`</span> — searches the web, outputs JSON
+<span class="hljs-bullet">  - </span>Requires: SERPAPI<span class="hljs-emphasis">_API_</span>KEY
+<span class="hljs-bullet">- </span><span class="hljs-code">`execution/update_sheet.py`</span> — writes data to Google Sheets
+<span class="hljs-bullet">  - </span>Requires: credentials.json
+
+<span class="hljs-section">## Workflow</span>
+<span class="hljs-bullet">1. </span>Run <span class="hljs-code">`search_web.py`</span> with the query. Save to <span class="hljs-code">`.tmp/results.json`</span>.
+<span class="hljs-bullet">2. </span>Read <span class="hljs-code">`.tmp/results.json`</span> and verify results look correct.
+<span class="hljs-bullet">3. </span>Run <span class="hljs-code">`update_sheet.py`</span> to write results to the Google Sheet.
+<span class="hljs-bullet">4. </span>Return the Sheet URL to the user.
+
+<span class="hljs-section">## Edge Cases</span>
+<span class="hljs-bullet">- </span>If fewer than 5 results are returned, ask the user to broaden the query.
+<span class="hljs-bullet">- </span>If the Sheet ID is invalid, provide a clear error message.
+</div></code></pre>
+<h3 id="step-2--write-the-execution-script">Step 2 — Write the Execution Script</h3>
+<p>Create <code>execution/search_web.py</code> that calls an API and saves output to a file.</p>
+<h3 id="step-3--add-api-keys-to-env">Step 3 — Add API Keys to .env</h3>
+<pre class="hljs"><code><div>SERPAPI_API_KEY=your_key_here
+</div></code></pre>
+<h3 id="step-4--test-it">Step 4 — Test It</h3>
+<p>Ask Copilot: <em>&quot;Search for 'AI startups 2025' and save the results to my Google Sheet.&quot;</em></p>
+<p>Copilot reads your directive → runs your scripts → delivers the output.</p>
+<hr>
+<h2 id="lesson-8-using-the-pre-built-agent-generator">Lesson 8: Using the Pre-Built Agent Generator</h2>
+<p>You don't always need to start from scratch. This framework has a built-in generator:</p>
+<pre class="hljs"><code><div>python execution/create_agent_workspace.py --name <span class="hljs-string">"My Lead Gen Agent"</span> --<span class="hljs-built_in">type</span> lead_generation
+</div></code></pre>
+<p><strong>Available agent types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lead_generation</code></td>
+<td>Scrapes leads from Google Maps, SERP, enriches with emails</td>
+</tr>
+<tr>
+<td><code>email_automation</code></td>
+<td>Automates cold email via Instantly.ai</td>
+</tr>
+<tr>
+<td><code>freelance_proposals</code></td>
+<td>Scrapes Upwork jobs and generates proposals</td>
+</tr>
+<tr>
+<td><code>video_editing</code></td>
+<td>Automates jump cuts and video transitions</td>
+</tr>
+<tr>
+<td><code>crm_integration</code></td>
+<td>Manages data between sheets, webhooks, cloud services</td>
+</tr>
+<tr>
+<td><code>research</code></td>
+<td>Creates literature review papers from academic sources</td>
+</tr>
+<tr>
+<td><code>full_stack</code></td>
+<td>Everything above combined</td>
+</tr>
+<tr>
+<td><code>custom</code></td>
+<td>Minimal base for building anything from scratch</td>
+</tr>
+</tbody>
+</table>
+<p>This generates a complete workspace in <code>outputs/</code> with the right scripts, directives, setup files, and README — ready to use.</p>
+<hr>
+<h2 id="lesson-9-two-ways-to-deploy">Lesson 9: Two Ways to Deploy</h2>
+<h3 id="mode-1--copilot-as-orchestrator-recommended-for-development">Mode 1 — Copilot as Orchestrator (recommended for development)</h3>
+<ul>
+<li>You work in VS Code with GitHub Copilot</li>
+<li>Copilot IS the AI — no LLM API keys needed for reasoning</li>
+<li>Scripts handle the deterministic work</li>
+<li>Great for: building, testing, iterating quickly</li>
+</ul>
+<h3 id="mode-2--standalone--cloud-deployment">Mode 2 — Standalone / Cloud Deployment</h3>
+<ul>
+<li>Agent runs on its own (cron job, webhook, cloud function)</li>
+<li>Scripts call LLMs directly using <code>OPENAI_API_KEY</code> or <code>ANTHROPIC_API_KEY</code></li>
+<li>Great for: automation pipelines that run without a human present</li>
+</ul>
+<p>The same directives and scripts work in both modes — you just change where the intelligence comes from.</p>
+<hr>
+<h2 id="lesson-10-the-golden-rules">Lesson 10: The Golden Rules</h2>
+<ol>
+<li>
+<p><strong>Directives are living documents.</strong> Update them every time you learn something new about an API, edge case, or better approach.</p>
+</li>
+<li>
+<p><strong>Scripts do one thing.</strong> Resist the urge to build a mega-script. Small, focused scripts are easier to fix and reuse.</p>
+</li>
+<li>
+<p><strong>Copilot routes, scripts execute.</strong> Never have Copilot manually process data it could hand off to a script.</p>
+</li>
+<li>
+<p><strong><code>.tmp/</code> is disposable.</strong> Never store anything important there. Real outputs go to Google Sheets, Docs, or another cloud service.</p>
+</li>
+<li>
+<p><strong>Self-anneal every time.</strong> Fix → test → update directive. Don't just patch and leave.</p>
+</li>
+</ol>
+<hr>
+<h2 id="quick-reference">Quick Reference</h2>
+<pre class="hljs"><code><div>I want to...                         | I should...
+-------------------------------------|------------------------------------------
+Define what my agent does            | Write a directive in directives/
+Make the agent do something reliably | Write a script in execution/
+Store an API key                     | Add it to .env
+Save intermediate data               | Write to .tmp/
+Deliver output to the user           | Write to Google Sheets / Docs
+Create a new standalone agent        | Run create_agent_workspace.py
+Fix a recurring bug                  | Fix script + update directive
+</div></code></pre>
+<hr>
+<h2 id="lesson-11-how-humans-should-think-when-working-with-agents">Lesson 11: How Humans Should Think When Working With Agents</h2>
+<p>Agents are only as good as the humans directing them. These mental models will make you dramatically better at designing, tasking, and debugging agents.</p>
+<hr>
+<h3 id="111-deciding-what-to-automate--jobs-to-be-done">11.1 Deciding What to Automate — Jobs to Be Done</h3>
+<p>Before building anything, ask: <strong>&quot;What job is this agent hired to do?&quot;</strong></p>
+<p>People don't want a lead scraper. They want a pipeline of qualified prospects so they can close more deals. That's the job. The scraper is just the mechanism.</p>
+<p>When you define the job clearly, the entire directive writes itself:</p>
+<ul>
+<li><strong>Goal</strong> = the job to be done</li>
+<li><strong>Inputs</strong> = what the job requires</li>
+<li><strong>Output</strong> = the artifact that proves the job is complete</li>
+</ul>
+<p>If you can't articulate the job in one sentence, the agent scope is too fuzzy. Keep narrowing until it's crisp.</p>
+<hr>
+<h3 id="112-designing-agents--first-principles">11.2 Designing Agents — First Principles</h3>
+<p>Don't start by asking &quot;what tools do I have?&quot; Start by asking <strong>&quot;what does this task actually require, at its core?&quot;</strong></p>
+<pre class="hljs"><code><div>1. What is the simplest possible input?
+2. What is the simplest possible output?
+3. What are the absolute minimum steps between them?
+</div></code></pre>
+<p>Then build exactly that. You can always add complexity later, but bloated agents are hard to debug and maintain.</p>
+<p><strong>Example:</strong> A proposal generator doesn't need to scrape 10 competitor sites, analyze sentiment, and build a market map. It needs: job description in → compelling proposal out. Start there.</p>
+<hr>
+<h3 id="113-breaking-complex-tasks-into-smaller-steps">11.3 Breaking Complex Tasks Into Smaller Steps</h3>
+<p>Agents fail when tasks are too big and vague. The fix is decomposition.</p>
+<p><strong>Rule of thumb:</strong> If a step in your directive can't be run as a single script call, it's too big. Break it down.</p>
+<pre class="hljs"><code><div>BAD:  &quot;Research the market and create a business plan&quot;
+
+GOOD:
+  Step 1: Search for market size data       → serp_market_research.py
+  Step 2: Search for competitor info        → serp_market_research.py
+  Step 3: Generate SWOT from the findings   → generate_business_plan.py
+  Step 4: Generate financial projections    → generate_business_plan.py
+  Step 5: Compile into a Google Doc         → create_google_doc.py
+</div></code></pre>
+<p>Each step has one input, one output, and one script. That's the target.</p>
+<hr>
+<h3 id="114-debugging-agents--inversion">11.4 Debugging Agents — Inversion</h3>
+<p>When an agent isn't working, flip the question. Instead of &quot;how do I make this work?&quot; ask: <strong>&quot;What would guarantee this fails?&quot;</strong></p>
+<p>Common ways agents fail:</p>
+<ul>
+<li>The directive is ambiguous and the agent interprets it wrong</li>
+<li>A script gets the wrong argument format</li>
+<li>An API key is missing or expired</li>
+<li>The output file path doesn't exist</li>
+<li>The agent skips a step because the directive didn't say it was mandatory</li>
+</ul>
+<p>Work through this list before diving into code. You'll find the issue faster.</p>
+<hr>
+<h3 id="115-debugging-agents--ockhams-razor">11.5 Debugging Agents — Ockham's Razor</h3>
+<p>When something breaks, <strong>the simplest explanation is almost always right.</strong></p>
+<pre class="hljs"><code><div>Agent not producing output?
+  → Check: is the script even running?
+  → Check: is the output file being written to the right path?
+  → Check: is the API key set in .env?
+
+Before assuming the logic is wrong, rule out the obvious.
+</div></code></pre>
+<p>Debug in order of simplest-to-most-complex. Don't assume a deep code bug exists until you've confirmed the basics are working.</p>
+<hr>
+<h3 id="116-root-cause-analysis">11.6 Root Cause Analysis</h3>
+<p>When you fix a bug, don't just fix the symptom — find out why it happened.</p>
+<p><strong>Ask &quot;why&quot; three times:</strong></p>
+<pre class="hljs"><code><div>The agent uploaded an empty sheet.
+  Why? → The script didn't write any rows.
+  Why? → The input JSON was empty.
+  Why? → The scrape returned zero results because the API query was malformed.
+
+Root cause: the query format, not the upload logic.
+</div></code></pre>
+<p>Fix the root cause. Then update the directive to warn about malformed queries. Now the whole system is smarter.</p>
+<hr>
+<h3 id="117-helping-the-agent-debug">11.7 Helping the Agent Debug</h3>
+<p>When an agent is stuck or producing wrong output, your job as the human is to give it better signal — not do the work for it.</p>
+<p><strong>Effective ways to unblock an agent:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wrong output format</td>
+<td>Show it a concrete example of what you expect</td>
+</tr>
+<tr>
+<td>Script error it can't fix</td>
+<td>Paste the full stack trace, not just &quot;it errored&quot;</td>
+</tr>
+<tr>
+<td>Agent is going in circles</td>
+<td>Explicitly tell it which step to start from</td>
+</tr>
+<tr>
+<td>Directive is ambiguous</td>
+<td>Clarify the ambiguous part in plain language</td>
+</tr>
+<tr>
+<td>API behaving unexpectedly</td>
+<td>Share the raw API response so it can see what's coming back</td>
+</tr>
+</tbody>
+</table>
+<p>The more concrete the information you provide, the faster the agent converges on the right answer.</p>
+<hr>
+<h3 id="118-systems-thinking--agents-dont-work-in-isolation">11.8 Systems Thinking — Agents Don't Work in Isolation</h3>
+<p>Every script you write connects to others. A bug in one step can silently corrupt downstream steps.</p>
+<p>Think about your agent as a pipeline, not a collection of independent scripts:</p>
+<pre class="hljs"><code><div>scrape → filter → enrich → upload → notify
+</div></code></pre>
+<p>If the filter step drops good leads (silent bug), the enrich step will under-perform, the sheet will look thin, and the notification will say &quot;done&quot; — but the actual deliverable is wrong.</p>
+<p><strong>Build in checkpoints.</strong> After key steps, have the agent verify the output before continuing. The lead scraping directive does this: run a test scrape of 25 leads, verify 80% match the target industry, then proceed. That checkpoint catches bad data early — before you've scraped 5,000 wrong leads.</p>
+<hr>
+<h3 id="119-the-map-is-not-the-territory">11.9 The Map Is Not the Territory</h3>
+<p>Your directive is a model of how the task should work. Reality will differ.</p>
+<p>APIs change. Rate limits are hit. Data comes back in unexpected formats. The directive is a starting point, not a guarantee.</p>
+<p><strong>This is exactly why self-annealing matters.</strong> Every time reality diverges from the directive, you update the directive. Over time, the map gets more accurate.</p>
+<p>Don't get frustrated when an agent follows the directive and still fails — it means the directive needs to be updated with real-world knowledge. That's normal. That's the process.</p>
+<hr>
+<h3 id="1110-the-adjacent-possible--build-incrementally">11.10 The Adjacent Possible — Build Incrementally</h3>
+<p>Don't try to build your most ambitious agent first. Build the next logical step from where you are.</p>
+<pre class="hljs"><code><div>You have: a working web scraper
+Adjacent possible: add email enrichment to the scraped data
+Next step: hook it up to a Google Sheet
+Then: add a Slack notification when it completes
+Then: schedule it to run daily
+</div></code></pre>
+<p>Each step is small and testable. By the time you've taken six adjacent steps, you have a sophisticated automated pipeline — and you understand every part of it because you built it incrementally.</p>
+<hr>
+<h2 id="what-to-build-next">What to Build Next</h2>
+<p>Start with something small and concrete:</p>
+<ol>
+<li>Pick one task you do manually and repetitively</li>
+<li>Write a directive for it (plain English SOP)</li>
+<li>Find or write a script that handles the core API call</li>
+<li>Test it with Copilot</li>
+<li>Iterate — add edge case handling, improve reliability</li>
+</ol>
+<p>The framework scales naturally. Once you have 3-4 working directives and scripts, you have a full agent.</p>
+
+</body>
+</html>

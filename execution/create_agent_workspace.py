@@ -61,7 +61,7 @@ def slugify(name: str) -> str:
 
 def create_workspace_structure(workspace_path: Path) -> None:
     """Create the basic folder structure."""
-    folders = ["directives", "execution", ".tmp", ".github/agents", ".vscode"]
+    folders = ["directives", "execution", "memory", ".tmp", ".github/agents", ".vscode"]
     for folder in folders:
         (workspace_path / folder).mkdir(parents=True, exist_ok=True)
     print(f"  ✓ Created folder structure")
@@ -93,6 +93,11 @@ def copy_scripts(workspace_path: Path, script_files: list | str, all_scripts: bo
             if src.name not in exclude:
                 shutil.copy2(src, dest_dir / src.name)
                 copied += 1
+        # Also copy tool_registry.json
+        reg_src = EXECUTION_DIR / "tool_registry.json"
+        if reg_src.exists():
+            shutil.copy2(reg_src, dest_dir / "tool_registry.json")
+            copied += 1
     else:
         for script in script_files:
             src = EXECUTION_DIR / script
@@ -101,6 +106,12 @@ def copy_scripts(workspace_path: Path, script_files: list | str, all_scripts: bo
                 copied += 1
             else:
                 print(f"  ⚠ Script not found: {script}")
+        # Always copy tool_registry.json if tool_registry.py is included
+        if "tool_registry.py" in script_files:
+            reg_src = EXECUTION_DIR / "tool_registry.json"
+            if reg_src.exists():
+                shutil.copy2(reg_src, dest_dir / "tool_registry.json")
+                copied += 1
     
     print(f"  ✓ Copied {copied} script(s)")
 
@@ -175,6 +186,11 @@ def generate_env_example(workspace_path: Path, env_vars: list) -> None:
     if not env_vars:
         content += "# Add your environment variables here\n"
     
+    content += "\n# Memory system guardrail thresholds (optional)\n"
+    content += "# DAILY_COST_BUDGET_USD=10.0\n"
+    content += "# MAX_TOKENS_PER_TASK=100000\n"
+    content += "# EMBEDDING_MODEL=all-MiniLM-L6-v2\n"
+    
     with open(workspace_path / ".env.example", "w", encoding="utf-8") as f:
         f.write(content)
     
@@ -186,6 +202,8 @@ def generate_requirements(workspace_path: Path, packages: list) -> None:
     content = "# Auto-generated requirements for this agent workspace\n\n"
     for package in sorted(set(packages)):
         content += f"{package}\n"
+    content += "\n# Optional: Enables semantic/hybrid search in memory system\n"
+    content += "# sentence-transformers\n"
     
     with open(workspace_path / "requirements.txt", "w", encoding="utf-8") as f:
         f.write(content)
@@ -208,6 +226,11 @@ token.json
 .tmp/
 *.tmp
 *.temp
+
+# Memory database (regenerated, contains local state)
+memory/*.db
+memory/*.db-wal
+memory/*.db-shm
 
 # Python
 __pycache__/
@@ -323,6 +346,21 @@ if (-not (Test-Path ".tmp")) {{
     Write-Host "✓ Created .tmp directory" -ForegroundColor Green
 }}
 
+# Create memory directory if it doesn't exist
+if (-not (Test-Path "memory")) {{
+    New-Item -ItemType Directory -Path "memory" | Out-Null
+    Write-Host "✓ Created memory directory" -ForegroundColor Green
+}}
+
+# Initialize memory database
+Write-Host "Initializing memory database..." -ForegroundColor Yellow
+python execution/memory_db.py status 2>$null
+if ($LASTEXITCODE -eq 0) {{
+    Write-Host "✓ Memory database initialized" -ForegroundColor Green
+}} else {{
+    Write-Host "WARNING: Memory database initialization skipped (run manually)" -ForegroundColor Yellow
+}}
+
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Cyan
 Write-Host "✓ SETUP COMPLETE!" -ForegroundColor Green
@@ -400,6 +438,11 @@ fi
 # Create .tmp directory if it doesn't exist
 mkdir -p .tmp
 echo "✓ Created .tmp directory"
+
+# Create memory directory and initialize database
+mkdir -p memory
+echo "✓ Created memory directory"
+python execution/memory_db.py status >/dev/null 2>&1 && echo "✓ Memory database initialized" || echo "WARNING: Memory DB init skipped"
 
 echo ""
 echo "============================================"
@@ -662,6 +705,7 @@ Other tasks available:
 ├── requirements.txt      # Python dependencies
 ├── .github/agents/       # VS Code custom agent config
 ├── .vscode/              # VS Code settings & tasks
+├── memory/               # Persistent memory database (auto-created)
 ├── directives/           # What to do (SOPs)
 └── execution/            # How to do it (scripts)
 ```
@@ -738,6 +782,7 @@ You operate within the **DOE Framework** (Directive, Orchestration, Execution):
 1. **Check for existing tools first** - Before writing a script, check `execution/` for existing solutions
 2. **Self-anneal when things break** - Fix errors, update scripts, test, and document learnings in directives
 3. **Reserve LLM for judgment** - Use scripts for mechanical operations; they're faster and deterministic
+4. **Use memory across sessions** - Search memory before tasks, store learnings after. Run `python execution/memory_db.py search "<keywords>"` to recall context. See `directives/memory_management.md` for full protocol.
 
 ## Available Resources
 
@@ -914,16 +959,23 @@ def create_agent_workspace(
     # Create structure
     create_workspace_structure(workspace_path)
     
-    # Copy directives
+    # Copy directives (always include memory_management and infrastructure_tools)
     directives = type_config.get("directives", []).copy()
+    for infra_dir in ["memory_management.md", "infrastructure_tools.md"]:
+        if infra_dir not in directives:
+            directives.append(infra_dir)
     if additional_directives:
         directives.extend(additional_directives)
     copy_directives(workspace_path, directives)
     
-    # Copy scripts
+    # Copy scripts (always include memory_db and infrastructure tools)
     scripts = type_config.get("scripts", [])
     if scripts != "ALL":
         scripts = scripts.copy()
+        # Always include core infrastructure scripts
+        for infra_script in ["memory_db.py", "tool_registry.py", "task_graph.py", "confirm_action.py", "execution_trace.py"]:
+            if infra_script not in scripts:
+                scripts.append(infra_script)
         if additional_scripts:
             scripts.extend(additional_scripts)
     copy_scripts(workspace_path, scripts)

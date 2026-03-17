@@ -12,7 +12,7 @@ Generate a complete, standalone agent workspace in `outputs/` that can be copied
 | Input | Required | Description |
 |-------|----------|-------------|
 | Agent Name | Yes | Human-readable name for the workspace (e.g., "My Lead Gen Agent") |
-| Agent Type | Yes | One of: `lead_generation`, `email_automation`, `freelance_proposals`, `video_editing`, `crm_integration`, `full_stack`, `custom` |
+| Agent Type | Yes | One of: `lead_generation`, `email_automation`, `freelance_proposals`, `video_editing`, `crm_integration`, `research`, `full_stack`, `custom` |
 | Additional Scripts | No | Extra scripts to include beyond the type's defaults |
 | Additional Directives | No | Extra directives to include |
 | Additional Packages | No | Extra Python packages to include |
@@ -43,6 +43,11 @@ Generate a complete, standalone agent workspace in `outputs/` that can be copied
 - **Purpose**: Manages data flow between sheets, webhooks, and cloud services
 - **Includes**: Google Sheets CRUD, Modal webhooks, Slack notifications
 - **API Keys Needed**: GOOGLE_SHEETS_CREDENTIALS_FILE, MODAL_TOKEN_ID, SLACK_WEBHOOK_URL
+
+### research
+- **Purpose**: Creates state-of-the-art review papers on research topics
+- **Includes**: Paper search (Semantic Scholar, CrossRef, arXiv, Google Scholar), PDF fetching, PDF-to-markdown conversion, review paper compilation
+- **API Keys Needed**: None required (SERPAPI_API_KEY optional for Google Scholar)
 
 ### full_stack
 - **Purpose**: Complete agent with ALL capabilities

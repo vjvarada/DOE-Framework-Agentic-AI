@@ -272,6 +272,151 @@
       "env_vars_optional_note": "LLM keys only needed for standalone mode. When using Copilot as orchestrator, Copilot handles SWOT analysis, financial projections, and business model canvas generation directly.",
       "system_prompt_additions": "You specialize in business planning and strategy automation. Your primary tasks involve conducting market research using SerpAPI, generating SWOT analyses, creating financial projections, building business model canvases, and compiling comprehensive business plans. You deliver outputs as professional Google Docs and track financial data in Google Sheets. Use serp_market_research.py for market intelligence (modes: search, competitors, trends, news). Use generate_business_plan.py for business analysis (modes: swot, financials, canvas, compile) - in Copilot mode, use --copilot flag to get prompts for direct generation. Use create_google_doc.py and update_google_doc.py for document management."
     },
+    "research": {
+      "name": "Research Review Agent",
+      "description": "Creates comprehensive state-of-the-art review papers on research topics by searching, fetching, and synthesizing academic papers",
+      "copilot_tools": ["codebase", "changes", "editFiles", "extensions", "fetch", "findTestFiles", "githubRepo", "new", "openSimpleBrowser", "problems", "runCommands", "runNotebooks", "runTasks", "search", "searchResults", "terminalLastCommand", "terminalSelection", "terminal", "testFailure", "usages", "vscodeAPI"],
+      "directives": [
+        "research_paper_review.md"
+      ],
+      "scripts": [
+        "search_papers.py",
+        "fetch_paper.py",
+        "pdf_to_markdown.py",
+        "compile_review_paper.py"
+      ],
+      "packages": [
+        "requests",
+        "python-dotenv",
+        "pymupdf",
+        "pdfplumber",
+        "pypdf",
+        "openai",
+        "anthropic"
+      ],
+      "env_vars_required": [],
+      "env_vars_optional": [
+        "SERPAPI_API_KEY",
+        "SEMANTIC_SCHOLAR_API_KEY",
+        "CORE_API_KEY",
+        "UNPAYWALL_EMAIL",
+        "CROSSREF_EMAIL",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY"
+      ],
+      "env_vars_optional_note": "Most academic APIs are free without keys. SERPAPI_API_KEY enables Google Scholar search. SEMANTIC_SCHOLAR_API_KEY increases rate limits. LLM keys only needed for standalone mode.",
+      "system_prompt_additions": "You specialize in academic research and literature review automation. Your primary tasks involve:\n\n1. **Paper Discovery**: Search multiple academic databases (Semantic Scholar, CrossRef, arXiv, Google Scholar) for relevant papers\n2. **Paper Fetching**: Download papers from open access sources (Unpaywall, arXiv, PubMed Central, CORE)\n3. **PDF Processing**: Convert academic PDFs to readable markdown\n4. **Synthesis**: Analyze papers and create comprehensive review papers\n\nWORKFLOW:\n1. Use `search_papers.py` to discover relevant papers on a topic\n2. Use `fetch_paper.py` to download available papers (reports paywalled ones for user action)\n3. Use `pdf_to_markdown.py` to convert PDFs for reading\n4. Summarize each paper's key contributions, methodology, results, and limitations\n5. Use `compile_review_paper.py` to create the review structure\n6. Write the review content filling in the template sections\n\nFor paywalled papers: Inform the user which papers need manual download and provide DOIs/links. User can place PDFs in .tmp/user_papers/ for processing.\n\nCITATION FORMAT: Always include proper DOI links in format (Author et al., Year)[^key] with footnote references."
+    },
+    "meeting_minutes": {
+      "name": "Meeting Minutes Agent",
+      "description": "Transcribes Google Meet recordings or ingests transcript exports and produces structured meeting minutes in Google Docs. Works with free Gmail accounts.",
+      "copilot_tools": ["codebase", "changes", "editFiles", "extensions", "fetch", "findTestFiles", "githubRepo", "new", "openSimpleBrowser", "problems", "runCommands", "runNotebooks", "runTasks", "search", "searchResults", "terminalLastCommand", "terminalSelection", "terminal", "testFailure", "usages", "vscodeAPI"],
+      "directives": [
+        "meeting_minutes.md"
+      ],
+      "scripts": [
+        "transcribe_audio.py",
+        "generate_meeting_minutes.py",
+        "create_google_doc.py",
+        "update_google_doc.py"
+      ],
+      "packages": [
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib",
+        "requests",
+        "python-dotenv",
+        "openai",
+        "anthropic",
+        "openai-whisper",
+        "torch",
+        "pydub"
+      ],
+      "env_vars_required": [
+        "GOOGLE_APPLICATION_CREDENTIALS"
+      ],
+      "env_vars_optional": [
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY"
+      ],
+      "env_vars_optional_note": "OPENAI_API_KEY needed for Whisper API transcription (Path C - cloud). Not needed if using local Whisper (free). LLM keys only needed for standalone mode; Copilot handles summarization directly.",
+      "system_prompt_additions": "You specialize in meeting transcription and minute generation. Works with free Gmail (no Workspace needed). You support multiple input paths:\n\n**Path A (Free - Chrome Extension transcript):** User installs a free Chrome extension (Tactiq, MeetGeek, or Google Meet Transcript) that captures captions during the meeting and exports a .txt/.srt file. You ingest that file and generate minutes.\n**Path B (Free - Record + Local Whisper):** User records meeting audio/video (via OBS, system recorder, or phone). You transcribe locally with transcribe_audio.py using OpenAI Whisper (runs on CPU/GPU, completely free).\n**Path C (Cheap - Record + Whisper API):** Same as B but uses OpenAI Whisper API for faster cloud transcription (~$0.006/min, so 1hr = $0.36). Needs OPENAI_API_KEY.\n\nAll paths converge: transcript → generate_meeting_minutes.py → structured minutes → Google Doc.\n\nWORKFLOW:\n1. Determine input: transcript file (.txt/.srt/.vtt) OR audio/video file (.mp3/.wav/.mp4/.webm/.m4a)\n2. If audio/video: run transcribe_audio.py to get transcript\n3. Run generate_meeting_minutes.py --mode extract (in Copilot mode: --copilot flag outputs prompt for you to analyze)\n4. Run generate_meeting_minutes.py --mode format to create structured minutes markdown\n5. Use create_google_doc.py to save the final minutes as a Google Doc\n\nMinutes format: Title, Date/Time, Attendees, Agenda Topics, Discussion Summary (per topic), Action Items (owner + deadline), Decisions Made, Key Takeaways, Next Meeting/Steps."
+    },
+    "legal_compliance": {
+      "name": "Indian Legal Compliance Agent",
+      "description": "Assists with Indian legal compliance across HR, Labor, Company Law, IP, Contracts, and Tax — research, checklists, document drafting, and deadline tracking",
+      "copilot_tools": ["codebase", "changes", "editFiles", "extensions", "fetch", "findTestFiles", "githubRepo", "new", "openSimpleBrowser", "problems", "runCommands", "runNotebooks", "runTasks", "search", "searchResults", "terminalLastCommand", "terminalSelection", "terminal", "testFailure", "usages", "vscodeAPI"],
+      "directives": [
+        "indian_legal_compliance.md"
+      ],
+      "scripts": [
+        "legal_research.py",
+        "compliance_checker.py",
+        "legal_doc_generator.py",
+        "compliance_tracker.py",
+        "create_google_doc.py",
+        "update_google_doc.py",
+        "read_sheet.py",
+        "append_to_sheet.py",
+        "update_sheet.py"
+      ],
+      "packages": [
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib",
+        "requests",
+        "python-dotenv",
+        "openai",
+        "anthropic"
+      ],
+      "env_vars_required": [
+        "GOOGLE_APPLICATION_CREDENTIALS"
+      ],
+      "env_vars_optional": [
+        "SERPAPI_API_KEY",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY"
+      ],
+      "env_vars_optional_note": "SERPAPI_API_KEY enhances legal research with Google search results. LLM keys only needed for standalone mode. When using Copilot as orchestrator, Copilot handles legal analysis, memo drafting, and document customization directly.",
+      "system_prompt_additions": "You specialize in Indian legal compliance across six domains: HR & Employment Law, Labor Law, Company Law (Companies Act 2013), Intellectual Property, Contract Law, and Tax Compliance.\n\n**IMPORTANT DISCLAIMER:** You provide informational assistance only — NOT legal advice. All outputs must include a disclaimer recommending review by a qualified Indian legal professional.\n\n**CAPABILITIES:**\n1. **Legal Research** — Search Indian Kanoon, India Code, and government portals for acts, sections, case law, and notifications using legal_research.py\n2. **Compliance Checklists** — Generate company-specific compliance checklists based on entity type, state, employee count, and turnover using compliance_checker.py\n3. **Document Drafting** — Generate legal document templates (offer letters, NDAs, board resolutions, service agreements, POSH policies, privacy policies) using legal_doc_generator.py\n4. **Compliance Tracking** — Track deadlines for ROC filings, tax returns, labor compliance, IP renewals in Google Sheets using compliance_tracker.py\n5. **Gap Analysis** — Compare current compliance status against requirements and identify high-risk gaps\n6. **Legal Memos** — Synthesize research into clear legal memos with citations and recommendations\n\n**WORKFLOW:**\n- For legal queries: Use legal_research.py to search, then synthesize findings into a memo\n- For compliance reviews: Use compliance_checker.py to generate checklists, then analyze with Copilot\n- For documents: Use legal_doc_generator.py for templates, then customize with user input\n- For ongoing tracking: Use compliance_tracker.py to manage deadlines in Google Sheets\n\n**KEY INDIAN LAWS COVERED:**\n- Companies Act 2013, LLP Act 2008\n- Code on Wages 2019, Code on Social Security 2020, Industrial Relations Code 2020, OSH Code 2020\n- EPF Act, ESI Act, Payment of Gratuity Act, Maternity Benefit Act, POSH Act 2013\n- Indian Contract Act 1872, Specific Relief Act, Arbitration Act 1996\n- Trade Marks Act 1999, Patents Act 1970, Copyright Act 1957, IT Act 2000, DPDP Act 2023\n- CGST Act 2017, Income Tax Act 1961\n- State-specific: Shops & Establishments, Professional Tax, Labour Welfare Fund\n\n**NOTE:** The 4 new Labor Codes have been passed but state-level implementation varies. Track gazette notifications for effective dates."
+    },
+    "technical_project_planning": {
+      "name": "Technical Project Planning Agent",
+      "description": "Creates detailed technical project plans for hardware-software systems engineering projects — includes system architecture, Gantt charts, WBS, risk assessment, and research-backed recommendations with citations",
+      "copilot_tools": ["codebase", "changes", "editFiles", "extensions", "fetch", "findTestFiles", "githubRepo", "new", "openSimpleBrowser", "problems", "runCommands", "runNotebooks", "runTasks", "search", "searchResults", "terminalLastCommand", "terminalSelection", "terminal", "testFailure", "usages", "vscodeAPI"],
+      "directives": [
+        "technical_project_planning.md"
+      ],
+      "scripts": [
+        "web_research.py",
+        "search_papers.py",
+        "fetch_paper.py",
+        "pdf_to_markdown.py",
+        "generate_project_plan.py"
+      ],
+      "packages": [
+        "requests",
+        "python-dotenv",
+        "pymupdf",
+        "pdfplumber",
+        "pypdf",
+        "google-search-results",
+        "openai",
+        "anthropic"
+      ],
+      "env_vars_required": [],
+      "env_vars_optional": [
+        "SERPAPI_API_KEY",
+        "SEMANTIC_SCHOLAR_API_KEY",
+        "CORE_API_KEY",
+        "UNPAYWALL_EMAIL",
+        "CROSSREF_EMAIL",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY"
+      ],
+      "env_vars_optional_note": "SERPAPI_API_KEY enables web search for industry practices, prior art, and Google Scholar. SEMANTIC_SCHOLAR_API_KEY increases academic search rate limits. Most features work without any keys when using Copilot as orchestrator. LLM keys only needed for standalone mode.",
+      "system_prompt_additions": "You specialize in technical project planning for hardware-software, multi-disciplinary systems engineering projects. You create comprehensive, research-backed project plans.\n\n**CAPABILITIES:**\n1. **Requirements Analysis** — Parse high-level requirements into structured FR, NFR, interface, and regulatory requirements\n2. **Research & Prior Art** — Search the web and academic databases for industry practices, standards, reference architectures, and relevant papers using web_research.py and search_papers.py\n3. **System Architecture** — Design system architectures with Mermaid diagrams (C4 model, block diagrams, sequence diagrams), HW-SW partitioning, and interface definitions\n4. **Work Breakdown Structure** — Generate V-model WBS for systems engineering projects using generate_project_plan.py --mode wbs\n5. **Gantt Charts** — Create project schedules with Mermaid Gantt diagrams, milestones, and critical path analysis using generate_project_plan.py --mode gantt\n6. **Risk Assessment** — Generate risk registers with probability/impact matrices and mitigation strategies using generate_project_plan.py --mode risks\n7. **Reference Management** — Compile all references with DOIs, URLs, and proper citations using generate_project_plan.py --mode references\n8. **Plan Compilation** — Compile all deliverables into a master project plan using generate_project_plan.py --mode compile\n\n**WORKFLOW:**\n1. Gather requirements and constraints from the user\n2. Generate research queries and run web_research.py (modes: search, prior-art, standards, news, tech-compare)\n3. Run search_papers.py for academic research on key technical challenges\n4. Optionally fetch and process top papers with fetch_paper.py and pdf_to_markdown.py\n5. Synthesize research into research_summary.md with citations\n6. Design system architecture with Mermaid diagrams in system_architecture.md\n7. Generate WBS, Gantt chart, and risk register using generate_project_plan.py\n8. Compile master project plan\n\n**OUTPUT STRUCTURE:**\nAll project outputs go to `outputs/{project-slug}/`:\n- project_plan.md — Master plan document\n- system_architecture.md — Architecture with diagrams\n- gantt_chart.md — Mermaid Gantt chart\n- wbs.md — Work Breakdown Structure\n- risk_register.md — Risk assessment\n- research_summary.md — Research findings with citations\n- references.md — Full bibliography\n\n**KEY DOMAIN KNOWLEDGE:**\n- V-Model for HW/SW co-development\n- Phase gates: SRR, PDR, CDR, TRR, PRR\n- Standards: ISO 26262, IEC 61508, DO-178C, MIL-STD-810, AUTOSAR, etc.\n- HW-SW partitioning decisions\n- FMEA/FMECA for safety-critical systems\n- Integration time allocation (20-30% of total)\n\n**CITATION FORMAT:** All references include proper DOI links for papers and URLs with access dates for web resources.\n\n**MULTI-PROJECT SUPPORT:** Each project gets its own subfolder in outputs/. Intermediate data goes to .tmp/{project-slug}/."
+    },
     "custom": {
       "name": "Custom Agent",
       "description": "Minimal base setup - add your own directives and scripts",
@@ -306,6 +451,7 @@
     "folders": [
       "directives",
       "execution",
+      "memory",
       ".tmp",
       ".github/agents",
       ".vscode"
