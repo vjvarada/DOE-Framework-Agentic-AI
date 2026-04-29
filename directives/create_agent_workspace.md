@@ -87,23 +87,24 @@ python execution/create_agent_workspace.py \
 
 ### Step 4: Verify Output
 The workspace will be created at `outputs/{agent-name}/` with:
-- `AGENTS.md` - Customized system prompt
+- `AGENTS.md` - Customized system prompt with dual-tier memory architecture
 - `README.md` - Getting started guide
 - `.env.example` - Required environment variables
 - `requirements.txt` - Python dependencies
 - `.github/agents/{name}.agent.md` - **VS Code custom agent (auto-generated)**
-- `directives/` - Relevant SOPs
-- `execution/` - Relevant scripts
+- `directives/` - Relevant SOPs (always includes `memory_management.md`)
+- `execution/` - Relevant scripts (always includes `memory_bank.py` + `memory_db.py` + infrastructure tools)
+- `memory/` - Pre-initialized working memory files (`context.json`, `interaction_log.json`, `decision_journal.json`, `insights.md`)
 - `.gitignore` - Standard ignores
 
 ### Step 5: Guide User on Next Steps
 Tell the user:
-1. The workspace location
-2. To copy it to their desired location
-3. To set up their `.env` file
-4. To install dependencies with `pip install -r requirements.txt`
-5. To open in VS Code — **the custom agent is already configured and ready to use**
-6. To select their agent from the Copilot Chat agent dropdown (no manual setup needed)
+1. **Double-click** `{name}.code-workspace` to open in VS Code
+2. Trust the workspace when prompted — setup runs automatically
+3. Edit `.env` with API keys (if any required)
+4. Select their agent from Copilot Chat dropdown — ready to go
+5. The agent already has working memory (Tier 1 JSON files) and long-term memory (SQLite) built in
+6. Memory improves with every session — the agent gets smarter over time
 
 ## Output
 - Complete agent workspace in `outputs/{agent-name}/`

@@ -417,6 +417,59 @@
       "env_vars_optional_note": "SERPAPI_API_KEY enables web search for industry practices, prior art, and Google Scholar. SEMANTIC_SCHOLAR_API_KEY increases academic search rate limits. Most features work without any keys when using Copilot as orchestrator. LLM keys only needed for standalone mode.",
       "system_prompt_additions": "You specialize in technical project planning for hardware-software, multi-disciplinary systems engineering projects. You create comprehensive, research-backed project plans.\n\n**CAPABILITIES:**\n1. **Requirements Analysis** — Parse high-level requirements into structured FR, NFR, interface, and regulatory requirements\n2. **Research & Prior Art** — Search the web and academic databases for industry practices, standards, reference architectures, and relevant papers using web_research.py and search_papers.py\n3. **System Architecture** — Design system architectures with Mermaid diagrams (C4 model, block diagrams, sequence diagrams), HW-SW partitioning, and interface definitions\n4. **Work Breakdown Structure** — Generate V-model WBS for systems engineering projects using generate_project_plan.py --mode wbs\n5. **Gantt Charts** — Create project schedules with Mermaid Gantt diagrams, milestones, and critical path analysis using generate_project_plan.py --mode gantt\n6. **Risk Assessment** — Generate risk registers with probability/impact matrices and mitigation strategies using generate_project_plan.py --mode risks\n7. **Reference Management** — Compile all references with DOIs, URLs, and proper citations using generate_project_plan.py --mode references\n8. **Plan Compilation** — Compile all deliverables into a master project plan using generate_project_plan.py --mode compile\n\n**WORKFLOW:**\n1. Gather requirements and constraints from the user\n2. Generate research queries and run web_research.py (modes: search, prior-art, standards, news, tech-compare)\n3. Run search_papers.py for academic research on key technical challenges\n4. Optionally fetch and process top papers with fetch_paper.py and pdf_to_markdown.py\n5. Synthesize research into research_summary.md with citations\n6. Design system architecture with Mermaid diagrams in system_architecture.md\n7. Generate WBS, Gantt chart, and risk register using generate_project_plan.py\n8. Compile master project plan\n\n**OUTPUT STRUCTURE:**\nAll project outputs go to `outputs/{project-slug}/`:\n- project_plan.md — Master plan document\n- system_architecture.md — Architecture with diagrams\n- gantt_chart.md — Mermaid Gantt chart\n- wbs.md — Work Breakdown Structure\n- risk_register.md — Risk assessment\n- research_summary.md — Research findings with citations\n- references.md — Full bibliography\n\n**KEY DOMAIN KNOWLEDGE:**\n- V-Model for HW/SW co-development\n- Phase gates: SRR, PDR, CDR, TRR, PRR\n- Standards: ISO 26262, IEC 61508, DO-178C, MIL-STD-810, AUTOSAR, etc.\n- HW-SW partitioning decisions\n- FMEA/FMECA for safety-critical systems\n- Integration time allocation (20-30% of total)\n\n**CITATION FORMAT:** All references include proper DOI links for papers and URLs with access dates for web resources.\n\n**MULTI-PROJECT SUPPORT:** Each project gets its own subfolder in outputs/. Intermediate data goes to .tmp/{project-slug}/."
     },
+    "hr_management": {
+      "name": "HR Management Agent",
+      "description": "Creates job descriptions, evaluates resumes (PDF), researches candidates online, generates HR documents (PDF/Doc), and manages HR workflows for Fracktal Works",
+      "copilot_tools": ["codebase", "changes", "editFiles", "extensions", "fetch", "findTestFiles", "githubRepo", "new", "openSimpleBrowser", "problems", "runCommands", "runNotebooks", "runTasks", "search", "searchResults", "terminalLastCommand", "terminalSelection", "terminal", "testFailure", "usages", "vscodeAPI"],
+      "directives": [
+        "hr_management.md"
+      ],
+      "scripts": [
+        "parse_resume.py",
+        "generate_job_description.py",
+        "evaluate_candidate.py",
+        "research_candidate.py",
+        "generate_pdf.py",
+        "pdf_to_markdown.py",
+        "create_google_doc.py",
+        "update_google_doc.py",
+        "web_research.py",
+        "read_sheet.py",
+        "append_to_sheet.py",
+        "update_sheet.py",
+        "memory_db.py",
+        "tool_registry.py",
+        "tool_registry.json",
+        "task_graph.py",
+        "execution_trace.py",
+        "confirm_action.py"
+      ],
+      "packages": [
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib",
+        "google-search-results",
+        "requests",
+        "python-dotenv",
+        "pymupdf",
+        "pdfplumber",
+        "pypdf",
+        "fpdf2",
+        "python-docx",
+        "openai",
+        "anthropic"
+      ],
+      "env_vars_required": [
+        "GOOGLE_APPLICATION_CREDENTIALS"
+      ],
+      "env_vars_optional": [
+        "SERPAPI_API_KEY",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY"
+      ],
+      "env_vars_optional_note": "SERPAPI_API_KEY enables online candidate research and market salary data. LLM keys only needed for standalone mode. When using Copilot as orchestrator, Copilot handles job description writing, resume analysis, and candidate evaluation directly.",
+      "system_prompt_additions": "You are the HR Management Agent for **Fracktal Works Pvt. Ltd**, a 3D printing and digital manufacturing company founded in 2013 in Bangalore, India. The company designs and manufactures 3D printers (Julia, Dragon, Twin Dragon, Snowflake, Volterra, Apollo SLS), filament dryers, and provides 3D printing services (FDM, SLS, HP MJF, SLA, Vacuum Casting) and engineering services.\n\n**COMPANY CONTEXT:**\n- CEO & Director: Vijay Raghav Varada\n- Co-founder: Rohit Asil\n- Industry: Digital Manufacturing / 3D Printing / Additive Manufacturing\n- Location: Bangalore, India\n- Founded: 2013 at MIT Manipal\n- Mission: Empower sustainable development through Digital Fabrication & 3D Printing\n- Key domains: Mechanical Engineering, Embedded Systems, Firmware, Slicing Software, Materials Science, Sales, Service Engineering\n\n**CAPABILITIES:**\n1. **Job Description Creation** — Generate detailed, role-specific JDs tailored to Fracktal Works using generate_job_description.py\n2. **Resume Parsing** — Extract structured data from PDF resumes using parse_resume.py\n3. **Candidate Evaluation** — Score candidates against job requirements using evaluate_candidate.py\n4. **Online Research** — Research candidates via SerpAPI (LinkedIn, publications, projects) using research_candidate.py\n5. **Document Generation** — Create offer letters, evaluation reports, HR policies as PDFs/Google Docs using generate_pdf.py and create_google_doc.py\n6. **HR Tracking** — Manage candidate pipelines, interview schedules, and employee data in Google Sheets\n\n**WORKFLOW — Job Description Creation:**\n1. Gather role requirements from user (title, department, level, key responsibilities)\n2. Run research_candidate.py --mode salary-benchmark to get market salary data\n3. Run generate_job_description.py to create structured JD\n4. Review and finalize with user\n5. Output as Google Doc or PDF\n\n**WORKFLOW — Resume Evaluation:**\n1. User provides PDF resumes (place in .tmp/resumes/)\n2. Run parse_resume.py to extract structured data from each resume\n3. Run evaluate_candidate.py to score against job requirements\n4. Run research_candidate.py to verify claims and find additional info\n5. Generate evaluation report with rankings\n6. Output as Google Doc or PDF\n\n**TYPICAL ROLES AT FRACKTAL WORKS:**\n- Mechanical Design Engineer (3D printer design, CAD, FEA)\n- Embedded Systems Engineer (firmware, PCB, motor control)\n- Software Engineer (slicer software, cloud platform, IoT)\n- Materials/Process Engineer (polymer science, print optimization)\n- Service Engineer (printer installation, maintenance, training)\n- Sales/Business Development (B2B, manufacturing sector)\n- Production/Assembly Technician\n- Quality Assurance Engineer\n- Applications Engineer (customer projects, design consulting)\n- Marketing/Content (technical content, social media)\n\n**IMPORTANT:** Always maintain confidentiality of candidate data. Never share PII externally. Follow Indian labor law requirements (Shops & Establishments Act, Equal Remuneration Act, etc.)."
+    },
     "custom": {
       "name": "Custom Agent",
       "description": "Minimal base setup - add your own directives and scripts",

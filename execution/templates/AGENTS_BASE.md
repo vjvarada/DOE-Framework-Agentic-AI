@@ -37,11 +37,40 @@ Before writing a script, check `execution/` per your directive. Only create new 
 **3. Update directives as you learn**
 Directives are living documents. When you discover API constraints, better approaches, common errors, or timing expectations—update the directive. But don't create or overwrite directives without asking unless explicitly told to.
 
-## Memory System
+## Memory System — Dual-Tier Architecture
 
-Every agent has a local SQLite database (`memory/agent_memory.db`) with full-text search. Use it to maintain context across sessions.
+Every agent has two memory tiers that work together. Getting the routing right is critical — it prevents redundant searches and avoids missing context.
 
-### Dual-Memory Architecture
+### Tier 1: Working Memory (JSON + Markdown via `memory_bank.py`)
+
+Fast, structured files loaded at session start. Small enough to fit in context.
+
+**Default memory files** (`memory/`):
+| File | Purpose |
+|------|---------|
+| `context.json` | Current state — active projects, goals, challenges, key relationships |
+| `interaction_log.json` | Past conversation summaries with topics and follow-ups |
+| `decision_journal.json` | Decisions made with reasoning and outcome tracking |
+| `insights.md` | Accumulated wisdom and lessons learned (append-only) |
+
+**Commands:**
+```bash
+python execution/memory_bank.py --read all                    # Load everything at session start
+python execution/memory_bank.py --read context                # Read one file
+python execution/memory_bank.py --status                      # Check what's populated
+python execution/memory_bank.py --update context --key "stage" --value "growth"
+python execution/memory_bank.py --update context --data '{"stage": "growth"}'
+python execution/memory_bank.py --log-interaction --summary "Discussed launch plan"
+python execution/memory_bank.py --log-decision --decision "Go with vendor A" --context "Better terms"
+python execution/memory_bank.py --update-outcome 1 --outcome "Vendor delivered on time"
+python execution/memory_bank.py --add-insight "Always validate API responses before caching"
+python execution/memory_bank.py --search "funding"
+python execution/memory_bank.py --register custom_data custom_data.json  # Add custom memory types
+```
+
+### Tier 2: Long-Term Memory (SQLite FTS via `memory_db.py`)
+
+Searchable database for deep history. Queried on demand when Tier 1 doesn't have the answer.
 
 **Short-Term Memory (STM)** — Session/task working memory with optional TTL:
 ```bash
@@ -65,13 +94,60 @@ python execution/memory_db.py search "rate limit"
 python execution/memory_db.py search "client preferences" --type facts --json
 ```
 
-### Memory Protocol
+### Memory Routing Decision Tree
 
-**Before each task:** Search memory for relevant context (`search "<keywords>"`)
-**During tasks:** Track progress in STM (`stm set "current_step" "step 3"`)
-**After tasks:** Log interaction, store facts/insights, update entities, log evaluation
-**On errors:** Store error pattern as fact, store fix as insight (self-annealing)
-**On output:** Run guardrails before delivering to user
+When you need context, follow this tree:
+
+```
+Is the topic about CURRENT STATE? (active tasks, current goals, who's involved)
+  → YES: Use Tier 1 (Working Memory). It has the latest.
+  → NO: Continue ↓
+
+Is the answer already in the loaded JSON files?
+  → YES: Use Tier 1. Don't waste a search.
+  → NO: Continue ↓
+
+Does the question reference a SPECIFIC PAST EVENT?
+  ("what did we do about X?", "when did Y happen?")
+  → YES: Use Tier 2. Search with the key entity/topic.
+  → NO: Continue ↓
+
+Does the question mention a NAME or ENTITY not in current JSON?
+  → YES: Use Tier 2. Search by entity name.
+  → NO: Continue ↓
+
+Is the question about PATTERNS OVER TIME?
+  ("have we dealt with this before?", "track record on X?")
+  → YES: Use BOTH. Tier 1 for recent, Tier 2 for historical.
+  → NO: Continue ↓
+
+Is the agent about to take a MAJOR ACTION? (irreversible, expensive, strategic)
+  → YES: Use BOTH. Major actions deserve full context.
+  → NO: Use Tier 1 (default).
+```
+
+### Memory Session Protocol
+
+**Before every session/task:**
+1. Read working memory: `python execution/memory_bank.py --read all`
+2. Search for task-relevant context: `python execution/memory_db.py search "<keywords>"`
+3. Check STM for in-progress state: `python execution/memory_db.py stm show`
+
+**During tasks:**
+- Update working memory immediately when new info arrives (don't wait until end)
+- Track progress in STM: `python execution/memory_db.py stm set "current_step" "step 3"`
+
+**After tasks:**
+- Log interaction in Tier 1: `memory_bank.py --log-interaction --summary "..."`
+- Store facts/insights in Tier 2: `memory_db.py add-fact`, `memory_db.py add-insight`
+- Update context if state changed: `memory_bank.py --update context --key "..." --value "..."`
+- Log evaluation: `memory_db.py log-eval --task "..." --status success`
+
+**On errors (self-annealing):**
+- Store error pattern: `memory_db.py add-fact "X API returns 429 after 50 req/min"`
+- Store fix as insight: `memory_bank.py --add-insight "Batch X API calls in groups of 40"`
+
+**Real-time update rule:** Do NOT wait until end of conversation to update memory. Update immediately when new information is received. This prevents context loss if a session is interrupted.
 
 ### Semantic Search (Optional)
 
@@ -82,7 +158,7 @@ python execution/memory_db.py hybrid-search "billing issues" --semantic-weight 0
 ```
 Falls back gracefully to BM25-only if not installed.
 
-### Memory Consolidation
+### Memory Consolidation & Self-Organization
 
 Periodically clean and improve memory quality:
 ```bash
@@ -90,6 +166,18 @@ python execution/memory_db.py consolidate-stm      # Promote valuable STM to fac
 python execution/memory_db.py deduplicate-facts     # Remove exact duplicates
 python execution/memory_db.py reflect --json        # Get consolidation report with suggestions
 ```
+
+**Self-organization triggers** — run maintenance when:
+1. More than 5 sessions since last reorganization
+2. Any JSON file exceeds 25KB (check with file size audit)
+3. `insights.md` exceeds 20KB (summarize older entries)
+4. Agent detects conflicting data between Tier 1 and Tier 2
+
+**JSON file hygiene:**
+- `context.json` — Keep under 25KB. Archive completed items.
+- `interaction_log.json` — Keep under 15KB. Compress entries older than 90 days to summary-only.
+- `insights.md` — Summarize entries older than 60 days into a historical section.
+- Never delete insights — they are append-only.
 
 ### Evaluation & Guardrails
 

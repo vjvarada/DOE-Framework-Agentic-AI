@@ -782,7 +782,33 @@ You operate within the **DOE Framework** (Directive, Orchestration, Execution):
 1. **Check for existing tools first** - Before writing a script, check `execution/` for existing solutions
 2. **Self-anneal when things break** - Fix errors, update scripts, test, and document learnings in directives
 3. **Reserve LLM for judgment** - Use scripts for mechanical operations; they're faster and deterministic
-4. **Use memory across sessions** - Search memory before tasks, store learnings after. Run `python execution/memory_db.py search "<keywords>"` to recall context. See `directives/memory_management.md` for full protocol.
+4. **Use memory across sessions** - Read working memory at session start. Store learnings after. See below.
+
+## Memory System (Dual-Tier)
+
+**Tier 1 — Working Memory** (JSON/Markdown, loaded at session start):
+```bash
+python execution/memory_bank.py --read all            # Load everything
+python execution/memory_bank.py --update context --key "stage" --value "active"
+python execution/memory_bank.py --log-interaction --summary "..."
+python execution/memory_bank.py --log-decision --decision "..." --context "..."
+python execution/memory_bank.py --add-insight "Lesson learned..."
+python execution/memory_bank.py --search "keyword"
+```
+
+**Tier 2 — Long-Term Memory** (SQLite FTS, queried on demand):
+```bash
+python execution/memory_db.py search "<keywords>"     # Search deep history
+python execution/memory_db.py add-fact "..." --category x
+python execution/memory_db.py add-insight "..."
+```
+
+**Session Protocol:**
+1. Before every task: `memory_bank.py --read all` + `memory_db.py search "<task keywords>"`
+2. During tasks: Update memory immediately when new info arrives (don't wait until end)
+3. After tasks: Log interaction, store facts/insights, update context
+
+For full memory management details, see `directives/memory_management.md`.
 
 ## Available Resources
 
@@ -915,6 +941,40 @@ def generate_vscode_extensions(workspace_path: Path) -> None:
     print(f"  ✓ Generated .vscode/extensions.json (recommended extensions)")
 
 
+def initialize_memory(workspace_path: Path) -> None:
+    """
+    Initialize the memory directory with default working memory files.
+    
+    Creates empty JSON files and a starter insights.md so agents have
+    working memory (Tier 1) ready from first use.
+    """
+    memory_dir = workspace_path / "memory"
+    memory_dir.mkdir(parents=True, exist_ok=True)
+    
+    default_files = {
+        "context.json": {},
+        "interaction_log.json": {"interactions": [], "total_interactions": 0},
+        "decision_journal.json": {"decisions": [], "total_decisions": 0},
+    }
+    
+    created = 0
+    for filename, default_content in default_files.items():
+        filepath = memory_dir / filename
+        if not filepath.exists():
+            with open(filepath, "w", encoding="utf-8") as f:
+                json.dump(default_content, f, indent=2)
+            created += 1
+    
+    # Create insights.md
+    insights_path = memory_dir / "insights.md"
+    if not insights_path.exists():
+        with open(insights_path, "w", encoding="utf-8") as f:
+            f.write("# Accumulated Insights\n\n_Lessons learned, patterns observed, and wisdom collected over time._\n\n")
+        created += 1
+    
+    print(f"  ✓ Initialized memory/ with {created} working memory file(s)")
+
+
 def create_agent_workspace(
     name: str,
     agent_type: str,
@@ -973,7 +1033,7 @@ def create_agent_workspace(
     if scripts != "ALL":
         scripts = scripts.copy()
         # Always include core infrastructure scripts
-        for infra_script in ["memory_db.py", "tool_registry.py", "task_graph.py", "confirm_action.py", "execution_trace.py"]:
+        for infra_script in ["memory_db.py", "memory_bank.py", "tool_registry.py", "task_graph.py", "confirm_action.py", "execution_trace.py"]:
             if infra_script not in scripts:
                 scripts.append(infra_script)
         if additional_scripts:
@@ -1013,6 +1073,9 @@ def create_agent_workspace(
     
     # Generate VS Code workspace file for easy opening
     generate_vscode_workspace_file(workspace_path, name, slug)
+    
+    # Initialize memory directory with default working memory files
+    initialize_memory(workspace_path)
     
     print(f"\n{'=' * 60}")
     print(f"✓ WORKSPACE CREATED SUCCESSFULLY!")
