@@ -26,8 +26,9 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 TEMPLATES_FILE = SCRIPT_DIR / "agent_templates.json"
 TEMPLATES_DIR = SCRIPT_DIR / "templates"
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
-DIRECTIVES_DIR = PROJECT_ROOT / "directives"
-EXECUTION_DIR = PROJECT_ROOT / "execution"
+
+# Shared utilities from the DOE Framework that every agent gets
+SHARED_SCRIPTS_DIR = PROJECT_ROOT / "execution"
 
 
 def load_templates() -> dict:
@@ -60,47 +61,45 @@ def slugify(name: str) -> str:
 
 
 def create_workspace_structure(workspace_path: Path) -> None:
-    """Create the basic folder structure."""
-    folders = ["directives", "execution", "memory", ".tmp", ".github/agents", ".vscode"]
+    """Create the basic folder structure per agent_repo_compatibility.md v6.0."""
+    folders = [
+        ".github/prompts",
+        ".github/skills",
+        ".github/instructions",
+        ".github/agents",
+        ".tmp/scripts",
+        "agent-data",
+        "inputs",
+        "outputs",
+        "tests",
+        "memory",
+        ".vscode",
+    ]
     for folder in folders:
         (workspace_path / folder).mkdir(parents=True, exist_ok=True)
     print(f"  ✓ Created folder structure")
 
 
-def copy_directives(workspace_path: Path, directive_files: list) -> None:
-    """Copy directive files to the new workspace."""
-    dest_dir = workspace_path / "directives"
-    copied = 0
-    for directive in directive_files:
-        src = DIRECTIVES_DIR / directive
-        if src.exists():
-            shutil.copy2(src, dest_dir / directive)
-            copied += 1
-        else:
-            print(f"  ⚠ Directive not found: {directive}")
-    print(f"  ✓ Copied {copied} directive(s)")
-
-
-def copy_scripts(workspace_path: Path, script_files: list | str, all_scripts: bool = False) -> None:
-    """Copy execution scripts to the new workspace."""
-    dest_dir = workspace_path / "execution"
+def copy_shared_scripts(workspace_path: Path, script_files: list | str, all_scripts: bool = False) -> None:
+    """Copy shared utility scripts to .tmp/scripts/."""
+    dest_dir = workspace_path / ".tmp" / "scripts"
     copied = 0
     
     if script_files == "ALL" or all_scripts:
         # Copy all Python scripts except the generator itself
         exclude = ["create_agent_workspace.py", "agent_templates.json", "__pycache__"]
-        for src in EXECUTION_DIR.glob("*.py"):
+        for src in SHARED_SCRIPTS_DIR.glob("*.py"):
             if src.name not in exclude:
                 shutil.copy2(src, dest_dir / src.name)
                 copied += 1
         # Also copy tool_registry.json
-        reg_src = EXECUTION_DIR / "tool_registry.json"
+        reg_src = SHARED_SCRIPTS_DIR / "tool_registry.json"
         if reg_src.exists():
             shutil.copy2(reg_src, dest_dir / "tool_registry.json")
             copied += 1
     else:
         for script in script_files:
-            src = EXECUTION_DIR / script
+            src = SHARED_SCRIPTS_DIR / script
             if src.exists():
                 shutil.copy2(src, dest_dir / script)
                 copied += 1
@@ -108,7 +107,7 @@ def copy_scripts(workspace_path: Path, script_files: list | str, all_scripts: bo
                 print(f"  ⚠ Script not found: {script}")
         # Always copy tool_registry.json if tool_registry.py is included
         if "tool_registry.py" in script_files:
-            reg_src = EXECUTION_DIR / "tool_registry.json"
+            reg_src = SHARED_SCRIPTS_DIR / "tool_registry.json"
             if reg_src.exists():
                 shutil.copy2(reg_src, dest_dir / "tool_registry.json")
                 copied += 1
@@ -137,14 +136,14 @@ def generate_agents_md(workspace_path: Path, agent_type: dict, agent_name: str) 
 
 {agent_type['system_prompt_additions']}
 
-### Available Directives
+### Available Skills
 """
     for directive in agent_type.get('directives', []):
         directive_name = directive.replace('.md', '').replace('_', ' ').title()
-        specialization += f"- `directives/{directive}` - {directive_name}\n"
+        specialization += f"- `{directive_name}` — see `.github/skills/<name>/SKILL.md`\n"
     
     if not agent_type.get('directives'):
-        specialization += "- Create your own directives in the `directives/` folder\n"
+        specialization += "- Create your own skills in `.github/skills/`\n"
     
     specialization += """
 ### Getting Started
@@ -354,7 +353,7 @@ if (-not (Test-Path "memory")) {{
 
 # Initialize memory database
 Write-Host "Initializing memory database..." -ForegroundColor Yellow
-python execution/memory_db.py status 2>$null
+python .tmp/scripts/memory_db.py status 2>$null
 if ($LASTEXITCODE -eq 0) {{
     Write-Host "✓ Memory database initialized" -ForegroundColor Green
 }} else {{
@@ -442,7 +441,7 @@ echo "✓ Created .tmp directory"
 # Create memory directory and initialize database
 mkdir -p memory
 echo "✓ Created memory directory"
-python execution/memory_db.py status >/dev/null 2>&1 && echo "✓ Memory database initialized" || echo "WARNING: Memory DB init skipped"
+python .tmp/scripts/memory_db.py status >/dev/null 2>&1 && echo "✓ Memory database initialized" || echo "WARNING: Memory DB init skipped"
 
 echo ""
 echo "============================================"
@@ -699,26 +698,33 @@ Other tasks available:
 ```
 {agent_name}/
 ├── agent-{slug}.code-workspace # ← Double-click to open VS Code!
-├── setup.ps1 / setup.sh  # One-command setup scripts
-├── AGENTS.md             # System prompt for AI agents
-├── .env.example          # Template for API keys
-├── requirements.txt      # Python dependencies
-├── .github/agents/       # VS Code custom agent config
-├── .vscode/              # VS Code settings & tasks
-├── memory/               # Persistent memory database (auto-created)
-├── directives/           # What to do (SOPs)
-└── execution/            # How to do it (scripts)
+├── setup.ps1 / setup.sh    # One-command setup scripts
+├── AGENTS.md               # Human + AI orientation document
+├── config.json              # CommandCenter contract
+├── agents.py                # build_agents() entry point
+├── .env.example             # Template for API keys
+├── requirements.txt         # Python dependencies
+├── .github/
+│   ├── prompts/system.md   # Runtime system prompt
+│   ├── agents/              # VS Code Copilot Chat agent
+│   └── skills/              # Skills: SKILL.md + scripts/
+├── .tmp/scripts/            # Shared utilities on PYTHONPATH
+├── agent-data/              # Reference data: catalogs, templates, docs
+├── inputs/                  # User-provided files
+├── outputs/                 # Campaign results and deliverables
+├── tests/                   # pytest suite
+└── memory/                  # Persistent memory database
 ```
 
-## Available Directives
+## Available Skills
 
 """
     for directive in agent_type.get('directives', []):
         directive_name = directive.replace('.md', '').replace('_', ' ').title()
-        content += f"- [{directive_name}](directives/{directive})\n"
+        content += f"- **{directive_name}** (`.github/skills/<name>/SKILL.md`)\n"
     
     if not agent_type.get('directives'):
-        content += "- Create your own directives in `directives/`\n"
+        content += "- Create your own skills in `.github/skills/`\n"
     
     content += f"""
 ## Required API Keys
@@ -773,13 +779,13 @@ tools: {tools_str}
 
 You operate within the **DOE Framework** (Directive, Orchestration, Execution):
 
-1. **Directives** (`directives/`): SOPs in Markdown that define WHAT to do
-2. **Orchestration** (You): Read directives, make routing decisions, call execution scripts
-3. **Execution** (`execution/`): Deterministic Python scripts that do the actual work
+1. **Skills** (`.github/skills/`): SKILL.md files + scripts that define WHAT to do
+2. **Orchestration** (You): Read skills, make routing decisions, call execution scripts
+3. **Execution** (`.tmp/scripts/` and skill scripts): Deterministic Python scripts
 
 ## Core Principles
 
-1. **Check for existing tools first** - Before writing a script, check `execution/` for existing solutions
+1. **Check for existing tools first** - Before writing a script, check `.github/skills/` and `.tmp/scripts/` for existing solutions
 2. **Self-anneal when things break** - Fix errors, update scripts, test, and document learnings in directives
 3. **Reserve LLM for judgment** - Use scripts for mechanical operations; they're faster and deterministic
 4. **Use memory across sessions** - Read working memory at session start. Store learnings after. See below.
@@ -788,19 +794,19 @@ You operate within the **DOE Framework** (Directive, Orchestration, Execution):
 
 **Tier 1 — Working Memory** (JSON/Markdown, loaded at session start):
 ```bash
-python execution/memory_bank.py --read all            # Load everything
-python execution/memory_bank.py --update context --key "stage" --value "active"
-python execution/memory_bank.py --log-interaction --summary "..."
-python execution/memory_bank.py --log-decision --decision "..." --context "..."
-python execution/memory_bank.py --add-insight "Lesson learned..."
-python execution/memory_bank.py --search "keyword"
+python .tmp/scripts/memory_bank.py --read all            # Load everything
+python .tmp/scripts/memory_bank.py --update context --key "stage" --value "active"
+python .tmp/scripts/memory_bank.py --log-interaction --summary "..."
+python .tmp/scripts/memory_bank.py --log-decision --decision "..." --context "..."
+python .tmp/scripts/memory_bank.py --add-insight "Lesson learned..."
+python .tmp/scripts/memory_bank.py --search "keyword"
 ```
 
 **Tier 2 — Long-Term Memory** (SQLite FTS, queried on demand):
 ```bash
-python execution/memory_db.py search "<keywords>"     # Search deep history
-python execution/memory_db.py add-fact "..." --category x
-python execution/memory_db.py add-insight "..."
+python .tmp/scripts/memory_db.py search "<keywords>"     # Search deep history
+python .tmp/scripts/memory_db.py add-fact "..." --category x
+python .tmp/scripts/memory_db.py add-insight "..."
 ```
 
 **Session Protocol:**
@@ -808,20 +814,20 @@ python execution/memory_db.py add-insight "..."
 2. During tasks: Update memory immediately when new info arrives (don't wait until end)
 3. After tasks: Log interaction, store facts/insights, update context
 
-For full memory management details, see `directives/memory_management.md`.
+For full memory management details, see `agent-data/memory_management.md`.
 
 ## Available Resources
 
-**Directives (SOPs):**
+**Skills:**
 """
     
-    # List directives
+    # List directives as skills
     for directive in agent_type.get('directives', []):
         directive_name = directive.replace('.md', '').replace('_', ' ').title()
-        content += f"- `directives/{directive}` - {directive_name}\n"
+        content += f"- `{directive_name}` — see `.github/skills/<name>/SKILL.md`\n"
     
     if not agent_type.get('directives'):
-        content += "- Create your own directives in `directives/`\n"
+        content += "- Create your own skills in `.github/skills/`\n"
     
     content += """
 **Key Files:**
@@ -832,9 +838,9 @@ For full memory management details, see `directives/memory_management.md`.
 ## Workflow
 
 When given a task:
-1. Check if a relevant directive exists in `directives/`
-2. Read the directive to understand the process
-3. Execute the appropriate scripts from `execution/`
+1. Check if a relevant skill exists in `.github/skills/`
+2. Read the SKILL.md to understand the process
+3. Execute the appropriate scripts from `.github/skills/<name>/scripts/` or `.tmp/scripts/`
 4. Handle errors by fixing and documenting
 5. Return deliverables (usually Google Sheet URLs or file outputs)
 
@@ -1024,16 +1030,7 @@ def create_agent_workspace(
     # Create structure
     create_workspace_structure(workspace_path)
     
-    # Copy directives (always include memory_management and infrastructure_tools)
-    directives = type_config.get("directives", []).copy()
-    for infra_dir in ["memory_management.md", "infrastructure_tools.md"]:
-        if infra_dir not in directives:
-            directives.append(infra_dir)
-    if additional_directives:
-        directives.extend(additional_directives)
-    copy_directives(workspace_path, directives)
-    
-    # Copy scripts (always include memory_db and infrastructure tools)
+    # Copy shared utility scripts to .tmp/scripts/
     scripts = type_config.get("scripts", [])
     if scripts != "ALL":
         scripts = scripts.copy()
@@ -1043,7 +1040,7 @@ def create_agent_workspace(
                 scripts.append(infra_script)
         if additional_scripts:
             scripts.extend(additional_scripts)
-    copy_scripts(workspace_path, scripts)
+    copy_shared_scripts(workspace_path, scripts)
     
     # Generate AGENTS.md
     generate_agents_md(workspace_path, type_config, name)
