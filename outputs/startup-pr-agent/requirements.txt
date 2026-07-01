@@ -1,0 +1,16 @@
+# Auto-generated requirements for this agent workspace
+
+anthropic
+apify-client
+fpdf2
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+google-search-results
+gspread
+openai
+python-dotenv
+requests
+
+# Optional: Enables semantic/hybrid search in memory system
+# sentence-transformers

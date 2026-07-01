@@ -1,0 +1,15 @@
+{
+  "name": "agent-creator",
+  "description": "Expert agent that creates other agents using the DOE Framework. Builds complete, production-ready agent workspaces with directives, scripts, and automated setup. Use for creating new agents, scaffolding agent workspaces, upgrading existing agents, and validating agent compatibility.",
+  "version": "0.1.0",
+  "skill_repos": [],
+  "integrations": [],
+  "optional_integrations": [],
+  "tags": ["agent-builder", "devtools", "scaffolding"],
+  "tool_scope": ["write_artifact", "manage_todo_list", "ask_user", "get_errors", "save_note", "recall_notes", "web_search", "fetch_page"],
+  "max_mutation_attempts": 1,
+  "mcp_servers": {},
+  "icon": "Bot",
+  "category": "devtools",
+  "webhook_routes": []
+}

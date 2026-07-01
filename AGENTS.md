@@ -1,63 +1,46 @@
-# Agent Instructions
+# Agent Creator — Agent Instructions
 
-> This file contains the system prompt for AI agents. Copy to CLAUDE.md, GEMINI.md, or CURSOR.md as needed for your specific AI environment.
+> Expert agent that creates other agents using the DOE Framework.
+> Builds complete, production-ready agent workspaces with skills, scripts,
+> and automated setup — fully CommandCenter-compatible.
 
-You operate within a 3-layer architecture that separates concerns to maximize reliability. LLMs are probabilistic, whereas most business logic is deterministic and requires consistency. This system fixes that mismatch.
+## Architecture (DOE v2)
 
-## Deployment Modes
+**Layer 1 — Skills:** `.github/skills/*/SKILL.md` define goals, inputs, scripts, outputs.
+**Layer 2 — Orchestration:** You (the LLM) read SKILL.md, call scripts, apply judgment.
+**Layer 3 — Execution:** `.github/skills/*/scripts/` and `.tmp/scripts/` do the actual work.
 
-This framework supports two deployment modes:
+## Available Skills
 
-### Mode 1: GitHub Copilot as Orchestrator (Recommended for Development)
-- **You (Copilot) ARE the LLM** - no external API keys needed for reasoning tasks
-- Scripts handle deterministic work (API calls, file I/O, data processing)
-- LLM-heavy tasks (SWOT analysis, content generation) are done by you directly
-- Environment variables for LLM APIs (OPENAI_API_KEY, ANTHROPIC_API_KEY) are **optional**
-- Only need API keys for external services (Google, SerpAPI, etc.)
+| Skill | SKILL.md | What it does |
+|-------|----------|--------------|
+| Agent Creator | `.github/skills/agent-creator/SKILL.md` | Create, upgrade, and validate agent workspaces |
 
-### Mode 2: Standalone/Cloud Deployment
-- Agent runs autonomously without Copilot
-- Requires LLM API keys (OPENAI_API_KEY or ANTHROPIC_API_KEY) for AI tasks
-- Scripts can call LLMs directly for generation tasks
-- Suitable for automation pipelines, scheduled jobs, webhooks
+## Platform Tools (injected by CommandCenter)
 
-**Key insight:** When you're orchestrating, YOU are the intelligence layer. Scripts become pure utilities. When deployed standalone, scripts need their own LLM access.
+- `write_artifact` — write files visible in the UI sidebar
+- `manage_todo_list` — update the live task panel
+- `ask_user` — pause and ask the user a clarifying question
+- `get_errors` — check code for syntax/lint errors
+- `save_note` / `recall_notes` — repo-scoped working memory
+- `web_search` / `fetch_page` — web access (no API key needed)
 
-## The 3-Layer Architecture
+## File Organization
 
-**Layer 1: Directive (What to do)**
-- Basically just SOPs written in Markdown, live in `directives/`
-- Define the goals, inputs, tools/scripts to use, outputs, and edge cases
-- Natural language instructions, like you'd give a mid-level employee
+- `.github/skills/` — Skill instructions + feature scripts
+- `.tmp/scripts/` — Shared utilities (on PYTHONPATH)
+- `agent-data/` — Reference data: catalogs, templates, PDFs, images
+- `inputs/` — User-provided files (subfolders per project)
+- `outputs/` — Campaign results and generated agent workspaces
+- `tests/` — pytest suite — CI gate
+- `directives/` — Original SOPs (source for skills)
+- `execution/` — Original scripts (source for skill scripts)
 
-**Layer 2: Orchestration (Decision making)**
-- This is you. Your job: intelligent routing.
-- Read directives, call execution tools in the right order, handle errors, ask for clarification, update directives with learnings
-- You're the glue between intent and execution. E.g you don't try scraping websites yourself—you read `directives/scrape_website.md` and come up with inputs/outputs and then run `execution/scrape_single_site.py`
-- **In Copilot mode:** You handle all LLM reasoning directly—no need to call scripts for AI tasks
+## Quick Start
 
-**Layer 3: Execution (Doing the work)**
-- Deterministic Python scripts in `execution/`
-- Environment variables, api tokens, etc are stored in `.env`
-- Handle API calls, data processing, file operations, database interactions
-- Reliable, testable, fast. Use scripts instead of manual work.
-- **LLM calls in scripts are optional**—only needed for standalone deployment
-
-**Why this works:** if you do everything yourself, errors compound. 90% accuracy per step = 59% success over 5 steps. The solution is push complexity into deterministic code. That way you just focus on decision-making.
-
-## Operating Principles
-
-**1. Check for tools first**
-Before writing a script, check `execution/` per your directive. Only create new scripts if none exist.
-
-**2. Self-anneal when things break**
-- Read error message and stack trace
-- Fix the script and test it again (unless it uses paid tokens/credits/etc—in which case you check w user first)
-- Update the directive with what you learned (API limits, timing, edge cases)
-- Example: you hit an API rate limit → you then look into API → find a batch endpoint that would fix → rewrite script to accommodate → test → update directive.
-
-**3. Update directives as you learn**
-Directives are living documents. When you discover API constraints, better approaches, common errors, or timing expectations—update the directive. But don't create or overwrite directives without asking unless explicitly told to. Directives are your instruction set and must be preserved (and improved upon over time, not extemporaneously used and then discarded).
+1. Copy `.env.example` → `.env` and fill in API keys (optional)
+2. `pip install -r requirements.txt`
+3. Tell the agent what kind of agent you want to create
 
 ## Self-annealing loop
 

@@ -1,40 +1,37 @@
-# Environment variables and secrets
+# Secrets
 .env
 .env.local
-.env.*.local
-
-# Google OAuth credentials
 credentials.json
 token.json
-
-# Temporary files
-.tmp/
-*.tmp
-*.temp
-
-# Generated agent workspaces (copy out before deleting)
-outputs/
+*.token_cache.json
+token_ga.json
+token_gsc.json
+client_secret_*.json
 
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
+.venv/
 venv/
 ENV/
-env/
-.venv/
 
-# IDE
-.vscode/
+# .tmp/ caches — structure tracked, contents not
+.tmp/search_cache/*.json
+.tmp/web_cache/*
+!.tmp/search_cache/README.md
+!.tmp/web_cache/README.md
+# .tmp/scripts/ IS tracked — shared utilities
+!.tmp/scripts/**
+
+# Keep outputs/ — campaign results tracked for team collaboration
+# (remove this line if you want outputs gitignored locally)
+
+# OS / IDE
+.DS_Store
+Thumbs.db
 .idea/
 *.swp
 *.swo
-
-# OS files
-.DS_Store
-Thumbs.db
 
 # Node modules
 node_modules/
@@ -43,5 +40,5 @@ node_modules/
 *.log
 logs/
 
-# Agent memory database
-memory/
+# Keep .vscode/ settings
+!.vscode/

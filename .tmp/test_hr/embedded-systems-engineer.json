@@ -1,0 +1,33 @@
+{
+  "company": "Fracktal Works Pvt. Ltd",
+  "title": "Embedded Systems Engineer",
+  "department": "Embedded",
+  "level": "Senior",
+  "location": "Bangalore, India",
+  "work_type": "On-site",
+  "company_description": "Fracktal Works is a pioneering 3D printing and digital manufacturing company founded in 2013. We design and manufacture industrial-grade 3D printers (Julia, Dragon, Twin Dragon, Snowflake, Volterra, Apollo SLS), develop proprietary slicing software (Fracktory), and provide comprehensive 3D printing services across FDM, SLS, HP MJF, SLA, and Vacuum Casting technologies. Our mission is to empower sustainable development through digital fabrication, making high-quality affordable manufacturing accessible to every individual and organization. Based in Bangalore, India, we serve clients across automotive, healthcare, aerospace, manufacturing, jewelry, dental, and entertainment industries.",
+  "department_context": "Firmware, PCB design, motor control, sensors, IoT connectivity",
+  "experience_required": "5-10 years",
+  "education_required": "B.Tech/B.E or equivalent; M.Tech preferred",
+  "responsibilities": [],
+  "required_skills": [
+    "C/C++",
+    "ARM Cortex",
+    "STM32",
+    "RTOS",
+    "PCB Design",
+    "KiCad/Altium",
+    "UART/SPI/I2C",
+    "Motor Control"
+  ],
+  "preferred_skills": [],
+  "benefits": [
+    "Work with cutting-edge 3D printing and digital manufacturing technology",
+    "Fast-paced startup environment with direct impact on products",
+    "Hands-on experience with hardware and software development",
+    "Collaborative and innovation-driven culture",
+    "Learning and growth opportunities in a rapidly evolving industry"
+  ],
+  "generated_at": "2026-04-18T14:32:54.633308",
+  "status": "draft"
+}

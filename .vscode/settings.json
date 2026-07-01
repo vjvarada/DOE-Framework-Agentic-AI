@@ -1,0 +1,6 @@
+{
+    "markdown-pdf.styles": [
+        ".vscode/markdown-pdf-custom.css"
+    ],
+    "markdown-pdf.highlightStyle": "github.css"
+}

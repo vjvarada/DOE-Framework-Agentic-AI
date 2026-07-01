@@ -1,0 +1,110 @@
+{
+  "summary_at": "2026-06-19T17:50:09.190633",
+  "group_by": "vendor",
+  "total_bills": 11,
+  "groups": {
+    "DeepSeek": {
+      "count": 11,
+      "total": 42.4,
+      "tax_total": 0.0,
+      "subtotal": 42.4,
+      "currency": "USD",
+      "bills": [
+        {
+          "filename": "receipt_0525eac0-d5bb-465c-8797-26948f814407.pdf",
+          "date_paid": "June 14, 2026",
+          "payment_number": "0525eac0-d5bb-465c-8797-26948f814407",
+          "total": 2.12,
+          "tax_amount": 0,
+          "description": "DeepSeek services"
+        },
+        {
+          "filename": "receipt_38bf3a7c-f309-4d86-8c7b-e1226bfb0a1c.pdf",
+          "date_paid": "June 10, 2026",
+          "payment_number": "38bf3a7c-f309-4d86-8c7b-e1226bfb0a1c",
+          "total": 2.12,
+          "tax_amount": 0,
+          "description": "DeepSeek services"
+        },
+        {
+          "filename": "receipt_4331fac8-a1b5-475a-a6f4-a7315bd3462c.pdf",
+          "date_paid": "June 17, 2026",
+          "payment_number": "4331fac8-a1b5-475a-a6f4-a7315bd3462c",
+          "total": 5.3,
+          "tax_amount": 0,
+          "description": "DeepSeek services"
+        },
+        {
+          "filename": "receipt_74F265747X946220X.pdf",
+          "date_paid": "June 13, 2026",
+          "payment_number": "74F265747X946220X",
+          "total": 5.3,
+          "tax_amount": 0,
+          "description": "DeepSeek services"
+        },
+        {
+          "filename": "receipt_8CT60534W85645917.pdf",
+          "date_paid": "June 12, 2026",
+          "payment_number": "8CT60534W85645917",
+          "total": 2.12,
+          "tax_amount": 0,
+          "description": "DeepSeek services"
+        },
+        {
+          "filename": "receipt_9240ed88-5e8c-4aa4-ac24-40a2c93b8a9a.pdf",
+          "date_paid": "June 14, 2026",
+          "payment_number": "9240ed88-5e8c-4aa4-ac24-40a2c93b8a9a",
+          "total": 5.3,
+          "tax_amount": 0,
+          "description": "DeepSeek services"
+        },
+        {
+          "filename": "receipt_9cde28fc-70b1-407d-813e-e19a5b64abe3.pdf",
+          "date_paid": "June 10, 2026",
+          "payment_number": "9cde28fc-70b1-407d-813e-e19a5b64abe3",
+          "total": 2.12,
+          "tax_amount": 0,
+          "description": "DeepSeek services"
+        },
+        {
+          "filename": "receipt_b21de81d-cb41-409f-9982-c19c25606cce.pdf",
+          "date_paid": "June 11, 2026",
+          "payment_number": "b21de81d-cb41-409f-9982-c19c25606cce",
+          "total": 5.3,
+          "tax_amount": 0,
+          "description": "DeepSeek services"
+        },
+        {
+          "filename": "receipt_b6a3a792-d620-499d-8195-1d77fa9783e5.pdf",
+          "date_paid": "June 09, 2026",
+          "payment_number": "b6a3a792-d620-499d-8195-1d77fa9783e5",
+          "total": 5.3,
+          "tax_amount": 0,
+          "description": "DeepSeek services"
+        },
+        {
+          "filename": "receipt_ba1ae7d9-54e7-4f47-a3bd-1087147ba9e8.pdf",
+          "date_paid": "June 18, 2026",
+          "payment_number": "ba1ae7d9-54e7-4f47-a3bd-1087147ba9e8",
+          "total": 5.3,
+          "tax_amount": 0,
+          "description": "DeepSeek services"
+        },
+        {
+          "filename": "receipt_e9ef7410-6d16-4308-b629-ac0c2728619f.pdf",
+          "date_paid": "June 08, 2026",
+          "payment_number": "e9ef7410-6d16-4308-b629-ac0c2728619f",
+          "total": 2.12,
+          "tax_amount": 0,
+          "description": "DeepSeek services"
+        }
+      ]
+    }
+  },
+  "grand_total": 42.4,
+  "grand_tax": 0.0,
+  "grand_subtotal": 42.4,
+  "currencies": [
+    "USD"
+  ]
+}

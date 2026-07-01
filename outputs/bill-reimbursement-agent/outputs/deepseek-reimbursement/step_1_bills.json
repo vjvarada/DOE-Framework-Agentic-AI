@@ -1,0 +1,326 @@
+{
+  "extracted_at": "2026-06-20T09:54:40.825764",
+  "total_bills": 11,
+  "errors": [],
+  "bills": [
+    {
+      "filename": "receipt_0525eac0-d5bb-465c-8797-26948f814407.pdf",
+      "vendor": "DeepSeek",
+      "vendor_email": "api-service@deepseek.com",
+      "bill_to_name": "Fracktal Works Pvt. Ltd",
+      "bill_to_address": [
+        "No. 3, 50FT Laggere Main Road,",
+        "Chowdeshwari Nagara, Near Old Police Chowky",
+        "Bengaluru",
+        "India"
+      ],
+      "payment_number": "0525eac0-d5bb-465c-8797-26948f814407",
+      "date_paid": "June 14, 2026",
+      "payment_method": "VISA1000",
+      "currency": "USD",
+      "items": [
+        {
+          "description": "DeepSeek services",
+          "amount": 2.12
+        }
+      ],
+      "subtotal": 2.0,
+      "tax_rate": 6.0,
+      "tax_amount": 0.12,
+      "tax_description": "VAT-China 6% on $2",
+      "total": 2.12,
+      "amount_paid": null,
+      "raw_text": "Receipt\nPayment number\n0525eac0-d5bb-465c-8797-26948f814407\nReceipt number\n91a2a405a0374c8ab4566215c76c889c\nDate paid\nJune 14, 2026\nPayment method\nVISA1000\nDeepSeek\n12F, Galaxy International Building\nGongshu Dist, Hangzhou 310003\nZhejiang, China\napi-service@deepseek.com\nBill to\nFracktal Works Pvt. Ltd\nNo. 3, 50FT Laggere Main Road,\nChowdeshwari Nagara, Near Old Police Chowky\nBengaluru\nIndia\n$2.12 paid on 2026-06-14 10:40:23-07:00\nDescription\nQuantity\nUnit Price\nTax\nAmount\nDeepSeek API tokens\n1\n$2\n6%\n$2.00\nSubtotal\n$2\nTotal excluding tax\n$2\nVAT-China 6% on $2\n$0.12\nTotal\n$2.12\nAmount paid\n$2.12"
+    },
+    {
+      "filename": "receipt_38bf3a7c-f309-4d86-8c7b-e1226bfb0a1c.pdf",
+      "vendor": "DeepSeek",
+      "vendor_email": "api-service@deepseek.com",
+      "bill_to_name": "Fracktal Works Pvt. Ltd",
+      "bill_to_address": [
+        "No. 3, 50FT Laggere Main Road,",
+        "Chowdeshwari Nagara, Near Old Police Chowky",
+        "Bengaluru",
+        "India"
+      ],
+      "payment_number": "38bf3a7c-f309-4d86-8c7b-e1226bfb0a1c",
+      "date_paid": "June 10, 2026",
+      "payment_method": "VISA1000",
+      "currency": "USD",
+      "items": [
+        {
+          "description": "DeepSeek services",
+          "amount": 2.12
+        }
+      ],
+      "subtotal": 2.0,
+      "tax_rate": 6.0,
+      "tax_amount": 0.12,
+      "tax_description": "VAT-China 6% on $2",
+      "total": 2.12,
+      "amount_paid": null,
+      "raw_text": "Receipt\nPayment number\n38bf3a7c-f309-4d86-8c7b-e1226bfb0a1c\nReceipt number\n0f0d40fa04c940779332cfc8a7030eda\nDate paid\nJune 10, 2026\nPayment method\nVISA1000\nDeepSeek\n12F, Galaxy International Building\nGongshu Dist, Hangzhou 310003\nZhejiang, China\napi-service@deepseek.com\nBill to\nFracktal Works Pvt. Ltd\nNo. 3, 50FT Laggere Main Road,\nChowdeshwari Nagara, Near Old Police Chowky\nBengaluru\nIndia\n$2.12 paid on 2026-06-10 15:45:55-07:00\nDescription\nQuantity\nUnit Price\nTax\nAmount\nDeepSeek API tokens\n1\n$2\n6%\n$2.00\nSubtotal\n$2\nTotal excluding tax\n$2\nVAT-China 6% on $2\n$0.12\nTotal\n$2.12\nAmount paid\n$2.12"
+    },
+    {
+      "filename": "receipt_4331fac8-a1b5-475a-a6f4-a7315bd3462c.pdf",
+      "vendor": "DeepSeek",
+      "vendor_email": "api-service@deepseek.com",
+      "bill_to_name": "Fracktal Works Pvt. Ltd",
+      "bill_to_address": [
+        "No. 3, 50FT Laggere Main Road,",
+        "Chowdeshwari Nagara, Near Old Police Chowky",
+        "Bengaluru",
+        "India"
+      ],
+      "payment_number": "4331fac8-a1b5-475a-a6f4-a7315bd3462c",
+      "date_paid": "June 17, 2026",
+      "payment_method": "VISA1000",
+      "currency": "USD",
+      "items": [
+        {
+          "description": "DeepSeek services",
+          "amount": 5.3
+        }
+      ],
+      "subtotal": 5.0,
+      "tax_rate": 6.0,
+      "tax_amount": 0.3,
+      "tax_description": "VAT-China 6% on $5",
+      "total": 5.3,
+      "amount_paid": null,
+      "raw_text": "Receipt\nPayment number\n4331fac8-a1b5-475a-a6f4-a7315bd3462c\nReceipt number\n05811d7a153d41069aee80d4a28e7e48\nDate paid\nJune 17, 2026\nPayment method\nVISA1000\nDeepSeek\n12F, Galaxy International Building\nGongshu Dist, Hangzhou 310003\nZhejiang, China\napi-service@deepseek.com\nBill to\nFracktal Works Pvt. Ltd\nNo. 3, 50FT Laggere Main Road,\nChowdeshwari Nagara, Near Old Police Chowky\nBengaluru\nIndia\n$5.30 paid on 2026-06-17 06:48:31-07:00\nDescription\nQuantity\nUnit Price\nTax\nAmount\nDeepSeek API tokens\n1\n$5\n6%\n$5.00\nSubtotal\n$5\nTotal excluding tax\n$5\nVAT-China 6% on $5\n$0.30\nTotal\n$5.30\nAmount paid\n$5.30"
+    },
+    {
+      "filename": "receipt_74F265747X946220X.pdf",
+      "vendor": "DeepSeek",
+      "vendor_email": "api-service@deepseek.com",
+      "bill_to_name": "Fracktal Works Pvt. Ltd",
+      "bill_to_address": [
+        "No. 3, 50FT Laggere Main Road,",
+        "Chowdeshwari Nagara, Near Old Police Chowky",
+        "Bengaluru",
+        "vjvarada@gmail.com"
+      ],
+      "payment_number": "74F265747X946220X",
+      "date_paid": "June 13, 2026",
+      "payment_method": "Paypal - GP249GGXF2NB8",
+      "currency": "USD",
+      "items": [
+        {
+          "description": "DeepSeek services",
+          "amount": 5.3
+        }
+      ],
+      "subtotal": 5.0,
+      "tax_rate": 6.0,
+      "tax_amount": 0.3,
+      "tax_description": "VAT-China 6% on $5.00",
+      "total": 5.3,
+      "amount_paid": null,
+      "raw_text": "Receipt\nPayment number\n74F265747X946220X\nReceipt number\n9949d51bbc4e4ead89fe2482b6da125a\nDate paid\nJune 13, 2026\nPayment method\nPaypal - GP249GGXF2NB8\nDeepSeek\n12F, Galaxy International Building\nGongshu Dist, Hangzhou 310003\nZhejiang, China\napi-service@deepseek.com\nBill to\nFracktal Works Pvt. Ltd\nNo. 3, 50FT Laggere Main Road,\nChowdeshwari Nagara, Near Old Police Chowky\nBengaluru\nIN\nvjvarada@gmail.com\n$5.30 paid on 2026-06-13 10:38:47\nDescription\nQuantity\nUnit Price\nTax\nAmount\nDeepSeek API tokens\n1\n$5.00\n6%\n$5.00\nSubtotal\n$5.00\nTotal excluding tax\n$5.00\nVAT-China 6% on $5.00\n$0.30\nTotal\n$5.30\nAmount paid\n$5.30"
+    },
+    {
+      "filename": "receipt_8CT60534W85645917.pdf",
+      "vendor": "DeepSeek",
+      "vendor_email": "api-service@deepseek.com",
+      "bill_to_name": "Fracktal Works Pvt. Ltd",
+      "bill_to_address": [
+        "No. 3, 50FT Laggere Main Road,",
+        "Chowdeshwari Nagara, Near Old Police Chowky",
+        "Bengaluru",
+        "vjvarada@gmail.com"
+      ],
+      "payment_number": "8CT60534W85645917",
+      "date_paid": "June 12, 2026",
+      "payment_method": "Paypal - GP249GGXF2NB8",
+      "currency": "USD",
+      "items": [
+        {
+          "description": "DeepSeek services",
+          "amount": 2.12
+        }
+      ],
+      "subtotal": 2.0,
+      "tax_rate": 6.0,
+      "tax_amount": 0.12,
+      "tax_description": "VAT-China 6% on $2.00",
+      "total": 2.12,
+      "amount_paid": null,
+      "raw_text": "Receipt\nPayment number\n8CT60534W85645917\nReceipt number\n759a3fb1991b4dfcbc36831172f21368\nDate paid\nJune 12, 2026\nPayment method\nPaypal - GP249GGXF2NB8\nDeepSeek\n12F, Galaxy International Building\nGongshu Dist, Hangzhou 310003\nZhejiang, China\napi-service@deepseek.com\nBill to\nFracktal Works Pvt. Ltd\nNo. 3, 50FT Laggere Main Road,\nChowdeshwari Nagara, Near Old Police Chowky\nBengaluru\nIN\nvjvarada@gmail.com\n$2.12 paid on 2026-06-12 14:00:09\nDescription\nQuantity\nUnit Price\nTax\nAmount\nDeepSeek API tokens\n1\n$2.00\n6%\n$2.00\nSubtotal\n$2.00\nTotal excluding tax\n$2.00\nVAT-China 6% on $2.00\n$0.12\nTotal\n$2.12\nAmount paid\n$2.12"
+    },
+    {
+      "filename": "receipt_9240ed88-5e8c-4aa4-ac24-40a2c93b8a9a.pdf",
+      "vendor": "DeepSeek",
+      "vendor_email": "api-service@deepseek.com",
+      "bill_to_name": "Fracktal Works Pvt. Ltd",
+      "bill_to_address": [
+        "No. 3, 50FT Laggere Main Road,",
+        "Chowdeshwari Nagara, Near Old Police Chowky",
+        "Bengaluru",
+        "India"
+      ],
+      "payment_number": "9240ed88-5e8c-4aa4-ac24-40a2c93b8a9a",
+      "date_paid": "June 14, 2026",
+      "payment_method": "VISA1000",
+      "currency": "USD",
+      "items": [
+        {
+          "description": "DeepSeek services",
+          "amount": 5.3
+        }
+      ],
+      "subtotal": 5.0,
+      "tax_rate": 6.0,
+      "tax_amount": 0.3,
+      "tax_description": "VAT-China 6% on $5",
+      "total": 5.3,
+      "amount_paid": null,
+      "raw_text": "Receipt\nPayment number\n9240ed88-5e8c-4aa4-ac24-40a2c93b8a9a\nReceipt number\ne16b4d4beda541fc859278b1c0fd7a12\nDate paid\nJune 14, 2026\nPayment method\nVISA1000\nDeepSeek\n12F, Galaxy International Building\nGongshu Dist, Hangzhou 310003\nZhejiang, China\napi-service@deepseek.com\nBill to\nFracktal Works Pvt. Ltd\nNo. 3, 50FT Laggere Main Road,\nChowdeshwari Nagara, Near Old Police Chowky\nBengaluru\nIndia\n$5.30 paid on 2026-06-14 20:35:07-07:00\nDescription\nQuantity\nUnit Price\nTax\nAmount\nDeepSeek API tokens\n1\n$5\n6%\n$5.00\nSubtotal\n$5\nTotal excluding tax\n$5\nVAT-China 6% on $5\n$0.30\nTotal\n$5.30\nAmount paid\n$5.30"
+    },
+    {
+      "filename": "receipt_9cde28fc-70b1-407d-813e-e19a5b64abe3.pdf",
+      "vendor": "DeepSeek",
+      "vendor_email": "api-service@deepseek.com",
+      "bill_to_name": "Vijay Varada",
+      "bill_to_address": [
+        "No. 3, 50FT Laggere Main Road,",
+        "Chowdeshwari Nagara, Near Old Police Chowky",
+        "Bengaluru",
+        "India"
+      ],
+      "payment_number": "9cde28fc-70b1-407d-813e-e19a5b64abe3",
+      "date_paid": "June 10, 2026",
+      "payment_method": "VISA1000",
+      "currency": "USD",
+      "items": [
+        {
+          "description": "DeepSeek services",
+          "amount": 2.12
+        }
+      ],
+      "subtotal": 2.0,
+      "tax_rate": 6.0,
+      "tax_amount": 0.12,
+      "tax_description": "VAT-China 6% on $2",
+      "total": 2.12,
+      "amount_paid": null,
+      "raw_text": "Receipt\nPayment number\n9cde28fc-70b1-407d-813e-e19a5b64abe3\nReceipt number\n9646a484cc584923b8adfa8bcdbebe35\nDate paid\nJune 10, 2026\nPayment method\nVISA1000\nDeepSeek\n12F, Galaxy International Building\nGongshu Dist, Hangzhou 310003\nZhejiang, China\napi-service@deepseek.com\nBill to\nVijay Varada\nNo. 3, 50FT Laggere Main Road,\nChowdeshwari Nagara, Near Old Police Chowky\nBengaluru\nIndia\n$2.12 paid on 2026-06-10 12:32:07-07:00\nDescription\nQuantity\nUnit Price\nTax\nAmount\nDeepSeek API tokens\n1\n$2\n6%\n$2.00\nSubtotal\n$2\nTotal excluding tax\n$2\nVAT-China 6% on $2\n$0.12\nTotal\n$2.12\nAmount paid\n$2.12"
+    },
+    {
+      "filename": "receipt_b21de81d-cb41-409f-9982-c19c25606cce.pdf",
+      "vendor": "DeepSeek",
+      "vendor_email": "api-service@deepseek.com",
+      "bill_to_name": "Fracktal Works Pvt. Ltd",
+      "bill_to_address": [
+        "No. 3, 50FT Laggere Main Road,",
+        "Chowdeshwari Nagara, Near Old Police Chowky",
+        "Bengaluru",
+        "India"
+      ],
+      "payment_number": "b21de81d-cb41-409f-9982-c19c25606cce",
+      "date_paid": "June 11, 2026",
+      "payment_method": "VISA1000",
+      "currency": "USD",
+      "items": [
+        {
+          "description": "DeepSeek services",
+          "amount": 5.3
+        }
+      ],
+      "subtotal": 5.0,
+      "tax_rate": 6.0,
+      "tax_amount": 0.3,
+      "tax_description": "VAT-China 6% on $5",
+      "total": 5.3,
+      "amount_paid": null,
+      "raw_text": "Receipt\nPayment number\nb21de81d-cb41-409f-9982-c19c25606cce\nReceipt number\na79d53a5dd0f4bf2a50ad567eac53768\nDate paid\nJune 11, 2026\nPayment method\nVISA1000\nDeepSeek\n12F, Galaxy International Building\nGongshu Dist, Hangzhou 310003\nZhejiang, China\napi-service@deepseek.com\nBill to\nFracktal Works Pvt. Ltd\nNo. 3, 50FT Laggere Main Road,\nChowdeshwari Nagara, Near Old Police Chowky\nBengaluru\nIndia\n$5.30 paid on 2026-06-11 01:58:13-07:00\nDescription\nQuantity\nUnit Price\nTax\nAmount\nDeepSeek API tokens\n1\n$5\n6%\n$5.00\nSubtotal\n$5\nTotal excluding tax\n$5\nVAT-China 6% on $5\n$0.30\nTotal\n$5.30\nAmount paid\n$5.30"
+    },
+    {
+      "filename": "receipt_b6a3a792-d620-499d-8195-1d77fa9783e5.pdf",
+      "vendor": "DeepSeek",
+      "vendor_email": "api-service@deepseek.com",
+      "bill_to_name": "Fracktal Works Pvt. Ltd",
+      "bill_to_address": [
+        "No. 3, 50FT Laggere Main Road,",
+        "Chowdeshwari Nagara, Near Old Police Chowky",
+        "Bengaluru",
+        "India"
+      ],
+      "payment_number": "b6a3a792-d620-499d-8195-1d77fa9783e5",
+      "date_paid": "June 09, 2026",
+      "payment_method": "VISA1000",
+      "currency": "USD",
+      "items": [
+        {
+          "description": "DeepSeek services",
+          "amount": 5.3
+        }
+      ],
+      "subtotal": 5.0,
+      "tax_rate": 6.0,
+      "tax_amount": 0.3,
+      "tax_description": "VAT-China 6% on $5",
+      "total": 5.3,
+      "amount_paid": null,
+      "raw_text": "Receipt\nPayment number\nb6a3a792-d620-499d-8195-1d77fa9783e5\nReceipt number\na7cf2c4cf59547f8894957b9fdb41021\nDate paid\nJune 09, 2026\nPayment method\nVISA1000\nDeepSeek\n12F, Galaxy International Building\nGongshu Dist, Hangzhou 310003\nZhejiang, China\napi-service@deepseek.com\nBill to\nFracktal Works Pvt. Ltd\nNo. 3, 50FT Laggere Main Road,\nChowdeshwari Nagara, Near Old Police Chowky\nBengaluru\nIndia\n$5.30 paid on 2026-06-09 04:12:16-07:00\nDescription\nQuantity\nUnit Price\nTax\nAmount\nDeepSeek API tokens\n1\n$5\n6%\n$5.00\nSubtotal\n$5\nTotal excluding tax\n$5\nVAT-China 6% on $5\n$0.30\nTotal\n$5.30\nAmount paid\n$5.30"
+    },
+    {
+      "filename": "receipt_ba1ae7d9-54e7-4f47-a3bd-1087147ba9e8.pdf",
+      "vendor": "DeepSeek",
+      "vendor_email": "api-service@deepseek.com",
+      "bill_to_name": "Fracktal Works Pvt. Ltd.",
+      "bill_to_address": [
+        "No. 3, 50FT Laggere Main Road,",
+        "Chowdeshwari Nagara, Near Old Police Chowky",
+        "Bengaluru",
+        "India"
+      ],
+      "payment_number": "ba1ae7d9-54e7-4f47-a3bd-1087147ba9e8",
+      "date_paid": "June 18, 2026",
+      "payment_method": "VISA1000",
+      "currency": "USD",
+      "items": [
+        {
+          "description": "DeepSeek services",
+          "amount": 5.3
+        }
+      ],
+      "subtotal": 5.0,
+      "tax_rate": 6.0,
+      "tax_amount": 0.3,
+      "tax_description": "VAT-China 6% on $5",
+      "total": 5.3,
+      "amount_paid": null,
+      "raw_text": "Receipt\nPayment number\nba1ae7d9-54e7-4f47-a3bd-1087147ba9e8\nReceipt number\nd0c0fdb804374ce7b710c21a5c8dcf23\nDate paid\nJune 18, 2026\nPayment method\nVISA1000\nDeepSeek\n12F, Galaxy International Building\nGongshu Dist, Hangzhou 310003\nZhejiang, China\napi-service@deepseek.com\nBill to\nFracktal Works Pvt. Ltd.\nNo. 3, 50FT Laggere Main Road,\nChowdeshwari Nagara, Near Old Police Chowky\nBengaluru\nIndia\n$5.30 paid on 2026-06-18 10:58:23-07:00\nDescription\nQuantity\nUnit Price\nTax\nAmount\nDeepSeek API tokens\n1\n$5\n6%\n$5.00\nSubtotal\n$5\nTotal excluding tax\n$5\nVAT-China 6% on $5\n$0.30\nTotal\n$5.30\nAmount paid\n$5.30"
+    },
+    {
+      "filename": "receipt_e9ef7410-6d16-4308-b629-ac0c2728619f.pdf",
+      "vendor": "DeepSeek",
+      "vendor_email": "api-service@deepseek.com",
+      "bill_to_name": "Fracktal Works Pvt. Ltd",
+      "bill_to_address": [
+        "No. 3, 50FT Laggere Main Road,",
+        "Chowdeshwari Nagara, Near Old Police Chowky",
+        "Bengaluru",
+        "India"
+      ],
+      "payment_number": "e9ef7410-6d16-4308-b629-ac0c2728619f",
+      "date_paid": "June 08, 2026",
+      "payment_method": "VISA1000",
+      "currency": "USD",
+      "items": [
+        {
+          "description": "DeepSeek services",
+          "amount": 2.12
+        }
+      ],
+      "subtotal": 2.0,
+      "tax_rate": 6.0,
+      "tax_amount": 0.12,
+      "tax_description": "VAT-China 6% on $2",
+      "total": 2.12,
+      "amount_paid": null,
+      "raw_text": "Receipt\nPayment number\ne9ef7410-6d16-4308-b629-ac0c2728619f\nReceipt number\n7e19963a103448e7abadcce0ebad6724\nDate paid\nJune 08, 2026\nPayment method\nVISA1000\nDeepSeek\n12F, Galaxy International Building\nGongshu Dist, Hangzhou 310003\nZhejiang, China\napi-service@deepseek.com\nBill to\nFracktal Works Pvt. Ltd\nNo. 3, 50FT Laggere Main Road,\nChowdeshwari Nagara, Near Old Police Chowky\nBengaluru\nIndia\n$2.12 paid on 2026-06-08 21:47:12-07:00\nDescription\nQuantity\nUnit Price\nTax\nAmount\nDeepSeek API tokens\n1\n$2\n6%\n$2.00\nSubtotal\n$2\nTotal excluding tax\n$2\nVAT-China 6% on $2\n$0.12\nTotal\n$2.12\nAmount paid\n$2.12"
+    }
+  ]
+}

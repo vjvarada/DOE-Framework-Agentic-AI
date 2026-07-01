@@ -1,0 +1,9 @@
+# Auto-generated requirements for this agent workspace
+
+anthropic
+openai
+pdfplumber
+pymupdf
+pypdf
+python-dotenv
+requests

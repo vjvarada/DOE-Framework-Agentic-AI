@@ -1,0 +1,21 @@
+{
+  "name": "bill-reimbursement-agent",
+  "description": "Processes PDF bills/receipts, extracts vendor/amount/tax data, summarizes totals by vendor or month, and generates professional PDF reimbursement reports with email drafts for accounts teams. Use for expense reimbursement, bill management, and accounts submission.",
+  "version": "0.1.0",
+  "skill_repos": [],
+  "integrations": [],
+  "optional_integrations": [],
+  "tags": [
+    "finance",
+    "reimbursement",
+    "bills",
+    "pdf",
+    "accounts"
+  ],
+  "tool_scope": null,
+  "max_mutation_attempts": 1,
+  "mcp_servers": {},
+  "icon": "Receipt",
+  "category": "finance",
+  "webhook_routes": []
+}
