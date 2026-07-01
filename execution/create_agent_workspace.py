@@ -610,12 +610,12 @@ def generate_vscode_workspace_file(workspace_path: Path, agent_name: str, slug: 
             ]
         }
     }
-    
-    workspace_file_path = workspace_path / f"{slug}.code-workspace"
+
+    workspace_file_path = workspace_path / f"agent-{slug}.code-workspace"
     with open(workspace_file_path, "w", encoding="utf-8") as f:
         json.dump(workspace_config, f, indent=2)
-    
-    print(f"  ✓ Generated {slug}.code-workspace (double-click to open VS Code)")
+
+    print(f"  ✓ Generated agent-{slug}.code-workspace (double-click to open VS Code)")
 
 
 def generate_readme(workspace_path: Path, agent_type: dict, agent_name: str) -> None:
@@ -631,7 +631,7 @@ def generate_readme(workspace_path: Path, agent_type: dict, agent_name: str) -> 
 
 ## 🚀 Instant Start
 
-**Just double-click:** `{slug}.code-workspace`
+**Just double-click:** `agent-{slug}.code-workspace`
 
 VS Code will automatically:
 1. Open the workspace
@@ -698,7 +698,7 @@ Other tasks available:
 
 ```
 {agent_name}/
-├── {slug}.code-workspace # ← Double-click to open VS Code!
+├── agent-{slug}.code-workspace # ← Double-click to open VS Code!
 ├── setup.ps1 / setup.sh  # One-command setup scripts
 ├── AGENTS.md             # System prompt for AI agents
 ├── .env.example          # Template for API keys
@@ -1003,7 +1003,12 @@ def create_agent_workspace(
     
     type_config = templates["agent_types"][agent_type]
     slug = slugify(name)
-    workspace_path = OUTPUTS_DIR / slug
+    # ── agent-* naming convention ─────────────────────────────────────────
+    # Folder/repo name always gets the "agent-" prefix per DOE Framework
+    # convention. The bare slug (without prefix) is used for config.json
+    # name, .agent.md filename, and internal references.
+    agent_folder = f"agent-{slug}"
+    workspace_path = OUTPUTS_DIR / agent_folder
     
     # Check if workspace already exists
     if workspace_path.exists():
@@ -1081,7 +1086,7 @@ def create_agent_workspace(
     print(f"✓ WORKSPACE CREATED SUCCESSFULLY!")
     print(f"{'=' * 60}")
     print(f"\n🚀 INSTANT START - Just double-click:")
-    print(f"   {workspace_path / (slug + '.code-workspace')}")
+    print(f"   {workspace_path / ('agent-' + slug + '.code-workspace')}")
     print(f"")
     print(f"   VS Code will:")
     print(f"   • Open the workspace")
