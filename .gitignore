@@ -4,9 +4,14 @@
 credentials.json
 token.json
 *.token_cache.json
-token_ga.json
-token_gsc.json
-client_secret_*.json
+
+# Catch credential files anywhere in the repo (overrides !.tmp/scripts/**)
+**/credentials.json
+**/token_ga.json
+**/token_gsc.json
+**/token.json
+**/*.pem
+**/*.key
 
 # Python
 __pycache__/
@@ -42,3 +47,15 @@ logs/
 
 # Keep .vscode/ settings
 !.vscode/
+
+# ──────────────────────────────────────────────────────────────────
+# CREDENTIAL FILES — always ignored, even inside tracked folders
+# These override ALL previous rules (including !.tmp/scripts/**)
+# ──────────────────────────────────────────────────────────────────
+**/credentials.json
+**/token.json
+**/token_ga.json
+**/token_gsc.json
+**/*.pem
+**/*.key
+**/.env
